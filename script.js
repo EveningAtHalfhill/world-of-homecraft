@@ -1007,7 +1007,52 @@ function drawRoundRect(ctx, x, y, width, height, radius) {
   ctx.closePath();
 }
 
-function drawPosterBadge(ctx, text, rarity, x, y) {
+function wrapCanvasText(ctx, text, maxWidth, maxLines = 3) {
+  const hasSpaces = /\s/.test(text);
+  const units = hasSpaces ? text.split(/(\s+)/).filter(Boolean) : Array.from(text);
+  const lines = [];
+  let line = "";
+
+  units.forEach((unit) => {
+    const nextLine = line + unit;
+    if (ctx.measureText(nextLine).width > maxWidth && line.trim()) {
+      lines.push(line.trimEnd());
+      line = unit.trimStart();
+    } else {
+      line = nextLine;
+    }
+  });
+
+  if (line.trim()) {
+    lines.push(line.trimEnd());
+  }
+
+  if (lines.length > maxLines) {
+    const clipped = lines.slice(0, maxLines);
+    let lastLine = clipped[maxLines - 1];
+    while (ctx.measureText(`${lastLine}...`).width > maxWidth && lastLine.length > 1) {
+      lastLine = lastLine.slice(0, -1);
+    }
+    clipped[maxLines - 1] = `${lastLine.trimEnd()}...`;
+    return clipped;
+  }
+
+  return lines;
+}
+
+function measurePosterBadge(ctx, text, maxWidth = 440) {
+  ctx.font = "700 22px sans-serif";
+  const innerWidth = Math.max(200, maxWidth - 46);
+  const lines = wrapCanvasText(ctx, text, innerWidth, 3);
+  const textWidth = Math.max(...lines.map((line) => ctx.measureText(line).width));
+  return {
+    lines,
+    width: Math.min(Math.max(textWidth + 46, 210), maxWidth),
+    height: 22 + lines.length * 28
+  };
+}
+
+function drawPosterBadge(ctx, text, rarity, x, y, maxWidth = 440) {
   const colors = {
     "普通": "#b8b8b8",
     "稀有": "#58a8ff",
@@ -1017,16 +1062,18 @@ function drawPosterBadge(ctx, text, rarity, x, y) {
   };
   const color = colors[rarity] || colors["普通"];
   ctx.font = "700 22px sans-serif";
-  const width = Math.min(ctx.measureText(text).width + 46, 420);
-  drawRoundRect(ctx, x, y - 28, width, 42, 20);
+  const badge = measurePosterBadge(ctx, text, maxWidth);
+  drawRoundRect(ctx, x, y - 28, badge.width, badge.height, 20);
   ctx.fillStyle = "rgba(0, 0, 0, 0.42)";
   ctx.fill();
   ctx.strokeStyle = color;
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.fillStyle = color;
-  ctx.fillText(text, x + 22, y);
-  return width;
+  badge.lines.forEach((line, index) => {
+    ctx.fillText(line, x + 22, y + index * 28);
+  });
+  return badge;
 }
 
 function savePlanImage() {
@@ -1117,15 +1164,23 @@ function savePlanImage() {
   ctx.fillText(t("affixes"), padding, y);
   y += 42;
   let badgeX = padding;
+  const posterRight = width - padding;
+  const badgeGap = 16;
+  let rowHeight = 0;
   currentPlan.affixes.forEach((affix) => {
-    const badgeWidth = drawPosterBadge(ctx, `${tRarity(affix.rarity)} · ${getAffixName(currentPlan.key, affix)}`, affix.rarity, badgeX, y);
-    badgeX += badgeWidth + 16;
-    if (badgeX > width - padding - 260) {
+    const badgeText = `${tRarity(affix.rarity)} · ${getAffixName(currentPlan.key, affix)}`;
+    const measured = measurePosterBadge(ctx, badgeText, 440);
+    if (badgeX > padding && badgeX + measured.width > posterRight) {
       badgeX = padding;
-      y += 56;
+      y += rowHeight + 14;
+      rowHeight = 0;
     }
+    const availableWidth = posterRight - badgeX;
+    const badge = drawPosterBadge(ctx, badgeText, affix.rarity, badgeX, y, Math.min(440, availableWidth));
+    badgeX += badge.width + badgeGap;
+    rowHeight = Math.max(rowHeight, badge.height);
   });
-  y += 72;
+  y += rowHeight + 44;
 
   ctx.fillStyle = "#d7ad53";
   ctx.font = "700 24px sans-serif";
