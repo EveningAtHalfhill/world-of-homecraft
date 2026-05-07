@@ -1,0 +1,17 @@
+【工程位置】
+/Users/weilai/codex-test/wow-home-generator
+
+【时间】
+2026-05-07 09:24:41
+
+【当前状态】
+V0.1 已冻结，当前进入 V0.1.1 小修与上线准备。项目保持纯静态 HTML/CSS/JavaScript，双击 index.html 可运行。
+
+【已解决】
+已完成 V0.1 正式展示名 World of Homecraft / 魔坊世界。已完成 13 职业家宅生成、动态职业背景、PNG 海报导出、坊间传闻、NPC 点评、稀有词缀与神话词缀、方案编号系统。
+
+【未解决】
+盗贼主题色与战士过于接近，仍偏红，需要调整为暗紫、毒绿、阴影黑风格。
+
+【下一步】
+仅修改 styles.css 中盗贼职业主题色，保持战士钢铁红风格不变；运行 node --check script.js 验证。

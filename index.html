@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>World of Homecraft | 魔坊世界</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="topbar">
+          <p class="eyebrow" id="brandName">魔坊世界</p>
+          <button class="lang-toggle" id="langToggle" type="button">中文 / EN</button>
+        </div>
+        <h1 id="page-title">World of Homecraft</h1>
+        <p class="intro" id="introText">一个会生成职业家宅、坊间传闻与NPC吐槽的艾泽拉斯生活幻想工具。</p>
+      </section>
+
+      <section class="control-panel" aria-label="生成控制">
+        <label class="field-label" id="classLabel" for="classSelect">职业</label>
+        <div class="select-wrap">
+          <select id="classSelect">
+            <option value="warlock">术士</option>
+            <option value="paladin">圣骑士</option>
+            <option value="rogue">盗贼</option>
+            <option value="shaman">萨满</option>
+            <option value="deathKnight">死亡骑士</option>
+            <option value="warrior">战士</option>
+            <option value="hunter">猎人</option>
+            <option value="mage">法师</option>
+            <option value="priest">牧师</option>
+            <option value="druid">德鲁伊</option>
+            <option value="monk">武僧</option>
+            <option value="demonHunter">恶魔猎手</option>
+            <option value="evoker">唤魔师</option>
+          </select>
+        </div>
+        <div class="button-row">
+          <button id="generateBtn" type="button">生成家宅方案</button>
+          <button class="secondary-button" id="saveBtn" type="button">保存方案截图</button>
+        </div>
+      </section>
+
+      <section class="result-card" id="resultCard" aria-live="polite">
+        <div class="result-header">
+          <div class="poster-topline">
+            <p class="result-kicker" id="className">术士方案</p>
+            <p class="serial-number" id="serialNumber">AZ-2026-0507-0000</p>
+          </div>
+          <h2 id="themeName">暗影契约藏书室</h2>
+        </div>
+
+        <div class="result-grid">
+          <article class="info-block">
+            <h3 id="furnitureTitle">核心家具</h3>
+            <ul id="furnitureList"></ul>
+          </article>
+
+          <article class="info-block">
+            <h3 id="locationTitle">传闻地点</h3>
+            <ul id="coordsList"></ul>
+          </article>
+        </div>
+
+        <article class="style-block">
+          <h3 id="styleTitle">装修风格说明</h3>
+          <p id="styleDescription"></p>
+        </article>
+
+        <article class="affix-block">
+          <h3 id="affixTitle">稀有词条</h3>
+          <div class="affix-list" id="affixList"></div>
+        </article>
+
+        <article class="npc-block">
+          <h3 id="npcTitle">NPC 点评</h3>
+          <p><strong id="npcName">古尔丹</strong><span id="npcComment">力量还不够。</span></p>
+        </article>
+
+        <article class="rumor-board">
+          <span id="rumorTitle">坊间传闻</span>
+          <ul id="rumorList"></ul>
+        </article>
+
+        <p class="corner-note" id="cornerNote">多半是酒馆醉话，别真去找。</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
