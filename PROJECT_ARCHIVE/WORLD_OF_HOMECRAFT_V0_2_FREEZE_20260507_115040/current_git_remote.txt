@@ -1,0 +1,2 @@
+origin	https://github.com/EveningAtHalfhill/world-of-homecraft.git (fetch)
+origin	https://github.com/EveningAtHalfhill/world-of-homecraft.git (push)

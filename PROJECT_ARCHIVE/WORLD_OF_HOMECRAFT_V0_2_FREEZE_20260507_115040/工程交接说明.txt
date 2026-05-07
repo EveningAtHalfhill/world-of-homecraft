@@ -1,0 +1,59 @@
+【工程位置】
+/Users/weilai/codex-test/wow-home-generator
+
+【线上地址】
+https://eveningathalfhill.github.io/world-of-homecraft/
+
+【当前提交】
+c6f731570da972b71c51499f93f3c9d91bce9243
+
+【当前目标】
+World of Homecraft / 魔坊世界 当前处于 V0.2 western fantasy flavor system 阶段。
+核心方向是 “Warcraft after work”：艾泽拉斯英雄卸甲归田后的生活幻想。
+
+【世界观方向】
+保持接近 WoW：
+- 职业文化
+- 阵营与地区气质
+- 酒馆传闻
+- NPC 短评
+- 暴雪式幽默
+- folk archive / tavern dossier / RPG world fragments
+
+不要偏 generic fantasy。
+不要出现 AI SaaS 工具感。
+目标是：像暴雪没做，但本该存在的 WoW 小角落。
+
+【已完成内容】
+- 纯静态 HTML/CSS/JS 项目。
+- GitHub Pages 已上线。
+- 中文内容池保留。
+- 英文内容池已进化为 Western Fantasy RPG flavor text。
+- 语言切换：中文 / EN。
+- PNG 海报导出跟随当前语言。
+- 13 个职业均有家宅、家具、地点、NPC、传闻、词缀内容。
+- README 已改成中英双语 fantasy archive 风格。
+- 新正式档案截图已整理进 PROJECT_ARCHIVE/screenshots/v0_1/。
+
+【未完成内容】
+- 还没有 Cloudflare Pages 镜像。
+- 还没有大陆访问方案。
+- 还没有 tavern board 广告位。
+- 还没有浏览器视觉回归截图检查。
+- 英文内容虽然已 RPG 化，但仍需人工在页面中逐职业审阅。
+
+【下一步优先级】
+1. 建立 Cloudflare Pages 镜像。
+2. 检查 GitHub Pages 线上页面中英文切换与 PNG 导出。
+3. 为 Cloudflare / GitHub Pages 做大陆访问对比。
+4. 设计 tavern board 广告位，不要现代 banner 口吻。
+5. 继续补充更接近 WoW 的职业、阵营、地区生活细节。
+
+【工程规则】
+- 不新增后端。
+- 不新增 npm。
+- 不接 API。
+- 不引入数据库。
+- 不删除中文世界池。
+- 不破坏 PNG 导出。
+- 不让项目变成 AI 工具面板。
