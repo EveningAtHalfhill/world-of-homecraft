@@ -130,7 +130,7 @@ Local path / 本地路径：
 
 - Internal project name / 内部项目名：`wow-home-generator`
 - Display name / 展示名：`World of Homecraft / 魔坊世界`
-- Current version / 当前版本：`V0.1.4`
+- Current version / 当前版本：`V0.2`
 - V0.1 theme / V0.1 主题：`职业家宅初版`
 - Next direction / 后续方向：`V0.2 酒馆与邻居`
 
