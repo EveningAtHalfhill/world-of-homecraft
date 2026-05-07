@@ -476,8 +476,8 @@ const I18N = {
     generate: "生成家宅方案",
     save: "分享我的家宅档案",
     copied: "家宅档案已装入行囊，链接也抄进旅店账本。",
-    furniture: "核心家具",
-    style: "装修风格说明",
+    furniture: "档案物件",
+    style: "房间残留",
     affixes: "稀有词条",
     visitor: "访客留言",
     danger: "家宅危险等级",
@@ -504,8 +504,8 @@ const I18N = {
     generate: "Roll a Homestead",
     save: "Share My Homestead Record",
     copied: "Your homestead record is packed. The link is copied into the tavern ledger.",
-    furniture: "Core Furnishings",
-    style: "Style Notes",
+    furniture: "Archive Objects",
+    style: "Room Trace",
     affixes: "Rare Affixes",
     visitor: "Visitor Note",
     danger: "House Danger Level",
@@ -562,10 +562,8 @@ const characterTitle = document.querySelector("#characterTitle");
 const archiveRegion = document.querySelector("#archiveRegion");
 const visitorTitle = document.querySelector("#visitorTitle");
 const visitorNote = document.querySelector("#visitorNote");
-const locationTitle = document.querySelector("#locationTitle");
 const furnitureTitle = document.querySelector("#furnitureTitle");
-const furnitureList = document.querySelector("#furnitureList");
-const coordsList = document.querySelector("#coordsList");
+const furnitureSummary = document.querySelector("#furnitureSummary");
 const affixList = document.querySelector("#affixList");
 const styleTitle = document.querySelector("#styleTitle");
 const styleDescription = document.querySelector("#styleDescription");
@@ -604,6 +602,39 @@ const dangerLevels = {
 const archiveLevels = {
   zh: ["普通档案", "稀有档案", "史诗档案", "传说档案", "禁忌档案"],
   en: ["Common Record", "Rare Record", "Epic Record", "Legendary Record", "Forbidden Archive"]
+};
+
+const roomTraces = {
+  zh: {
+    warlock: ["墙角仍有绿火和旧契约味。", "蜡烛熄灭后，低语还留着。"],
+    paladin: ["长椅和晨光都过分端正。", "门槛像刚被祝福过。"],
+    rogue: ["皮革、冷铁和金币声藏在暗处。", "后门比正门更像主人。"],
+    shaman: ["石盆旁还残着雨和灰烬。", "地板像记得昨夜的雷声。"],
+    deathKnight: ["冷铁气息压住了炉火。", "霜痕沿着门缝停住。"],
+    warrior: ["旗影、铁锈和旧战吼仍在。", "桌面留下盾牌撞痕。"],
+    hunter: ["兽皮、松针和肉干味未散。", "脚印比访客名字更多。"],
+    mage: ["空气里残着蓝光和错位星尘。", "茶壶旁有传送后的静电。"],
+    priest: ["帷幕后有光，也有安静的影子。", "椅背像听过太多告解。"],
+    druid: ["苔藓沿着木纹慢慢醒来。", "月光停在水盆边不肯走。"],
+    monk: ["茶香压住了争吵声。", "晨钟余音还挂在竹影里。"],
+    demonHunter: ["邪火把墙影烧得很锋利。", "裂痕旁仍有战刃的冷光。"],
+    evoker: ["青铜尘和翡翠光落在桌沿。", "沙漏旁残着一阵温热风声。"]
+  },
+  en: {
+    warlock: ["Greenfire and old contracts linger in the corner.", "The candles die; the whispers remain."],
+    paladin: ["Benches and dawnlight stand too straight.", "The threshold still feels blessed."],
+    rogue: ["Leather, cold iron, and coin-sound hide in shadow.", "The back door knows the owner better."],
+    shaman: ["Rain and ash linger beside the stone basin.", "The floor remembers last night's thunder."],
+    deathKnight: ["Cold iron keeps the hearth obedient.", "Frost stops neatly at the doorframe."],
+    warrior: ["Banner-shadow, rust, and old battle cries remain.", "Shield marks still scar the table."],
+    hunter: ["Hide, pine needles, and jerky scent remain.", "There are more tracks than names."],
+    mage: ["Blue light and misplaced stardust hang in the air.", "Portal static clings to the teapot."],
+    priest: ["Light waits behind the veil; shadow waits beside it.", "The chair has heard too many confessions."],
+    druid: ["Moss wakes slowly along the grain.", "Moonlight refuses to leave the basin."],
+    monk: ["Tea has settled the argument.", "The morning bell still hangs in bamboo shade."],
+    demonHunter: ["Felfire leaves every shadow sharpened.", "The rift still holds a glaive-cold gleam."],
+    evoker: ["Bronze dust and emerald light rest on the table.", "Warm wind lingers beside the hourglass."]
+  }
 };
 
 const dangerProfiles = {
@@ -933,7 +964,7 @@ function renderList(element, items) {
 
 function renderAffixes(affixes) {
   affixList.innerHTML = "";
-  affixes.forEach((affix) => {
+  affixes.slice(0, 2).forEach((affix) => {
     const badge = document.createElement("span");
     badge.className = "affix-badge";
     badge.dataset.rarity = affix.rarity;
@@ -1000,6 +1031,11 @@ function homesteadIdentityFor(key) {
   return identityLayer[currentLang][key];
 }
 
+function roomTraceFor(key, index) {
+  const traces = roomTraces[currentLang][key];
+  return traces[index % traces.length];
+}
+
 function updateStaticText() {
   document.documentElement.lang = t("htmlLang");
   brandName.textContent = t("brand");
@@ -1041,15 +1077,13 @@ function renderCurrentPlan() {
   characterTitle.textContent = homesteadIdentity.titles[currentPlan.characterTitleIndex % homesteadIdentity.titles.length];
   archiveRegion.textContent = homesteadIdentity.regions[currentPlan.archiveRegionIndex % homesteadIdentity.regions.length];
   visitorNote.textContent = homesteadIdentity.visitors[currentPlan.visitorNoteIndex % homesteadIdentity.visitors.length];
-  locationTitle.textContent = data.locationTitle;
-  renderList(furnitureList, currentPlan.furnitureIndices.map((index) => data.furniture[index]));
-  renderList(coordsList, currentPlan.coordIndices.map((index) => data.coords[index]));
+  furnitureSummary.textContent = currentPlan.furnitureIndices.map((index) => data.furniture[index]).join(" · ");
   renderAffixes(currentPlan.affixes);
   dangerLevel.textContent = dangerLevels[currentLang][currentPlan.dangerIndex];
   archiveRarity.textContent = archiveLevels[currentLang][currentPlan.archiveIndex];
   neighborNote.textContent = identity.neighbor[currentPlan.neighborIndex % identity.neighbor.length];
   tavernReputation.textContent = identity.tavern[currentPlan.tavernIndex % identity.tavern.length];
-  styleDescription.textContent = getStyleText(data, currentPlan.styleIndex);
+  styleDescription.textContent = roomTraceFor(currentPlan.key, currentPlan.styleIndex);
   renderList(rumorList, currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]));
   npcName.textContent = `${npc.name}:`;
   npcComment.textContent = `“${npc.comment}”`;
@@ -1258,11 +1292,10 @@ function savePlanImage(options = {}) {
   const currentArchiveRegion = homesteadIdentity.regions[currentPlan.archiveRegionIndex % homesteadIdentity.regions.length];
   const currentVisitorNote = homesteadIdentity.visitors[currentPlan.visitorNoteIndex % homesteadIdentity.visitors.length];
   const furniture = currentPlan.furnitureIndices.map((index) => data.furniture[index]);
-  const locations = currentPlan.coordIndices.map((index) => data.coords[index]);
   const rumors = currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]);
   const neighbor = identity.neighbor[currentPlan.neighborIndex % identity.neighbor.length];
   const tavern = identity.tavern[currentPlan.tavernIndex % identity.tavern.length];
-  const styleText = getStyleText(data, currentPlan.styleIndex);
+  const styleText = roomTraceFor(currentPlan.key, currentPlan.styleIndex);
 
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
@@ -1342,8 +1375,21 @@ function savePlanImage(options = {}) {
   ctx.fillRect(padding, y, width - padding * 2, 3);
   y += 56;
 
-  y = drawSection(ctx, t("furniture"), furniture, padding, y, width - padding * 2);
-  y = drawSection(ctx, data.locationTitle, locations, padding, y, width - padding * 2);
+  ctx.fillStyle = "#d7ad53";
+  ctx.font = "700 24px sans-serif";
+  ctx.fillText(t("furniture"), padding, y);
+  y += 38;
+  ctx.fillStyle = "#f4ead8";
+  ctx.font = "24px sans-serif";
+  y = drawWrappedText(ctx, furniture.join(" · "), padding, y, width - padding * 2, 34, 2) + 22;
+
+  ctx.fillStyle = "#d7ad53";
+  ctx.font = "700 24px sans-serif";
+  ctx.fillText(t("style"), padding, y);
+  y += 38;
+  ctx.fillStyle = "rgba(244, 234, 216, 0.82)";
+  ctx.font = "24px sans-serif";
+  y = drawWrappedText(ctx, styleText, padding, y, width - padding * 2, 34, 2) + 24;
 
   ctx.fillStyle = "#d7ad53";
   ctx.font = "700 24px sans-serif";
@@ -1353,7 +1399,7 @@ function savePlanImage(options = {}) {
   const posterRight = width - padding;
   const badgeGap = 16;
   let rowHeight = 0;
-  currentPlan.affixes.forEach((affix) => {
+  currentPlan.affixes.slice(0, 2).forEach((affix) => {
     const badgeText = `${tRarity(affix.rarity)} · ${getAffixName(currentPlan.key, affix)}`;
     const measured = measurePosterBadge(ctx, badgeText, 440);
     if (badgeX > padding && badgeX + measured.width > posterRight) {
@@ -1403,10 +1449,6 @@ function savePlanImage(options = {}) {
     y = drawWrappedText(ctx, `✦ ${rumor}`, padding, y, width - padding * 2, 38, 2) + 8;
   });
   y += 10;
-
-  ctx.fillStyle = "rgba(244, 234, 216, 0.82)";
-  ctx.font = "22px sans-serif";
-  drawWrappedText(ctx, styleText, padding, y + 34, width - padding * 2, 34, 5);
 
   ctx.fillStyle = "rgba(215, 198, 165, 0.48)";
   ctx.font = "20px sans-serif";

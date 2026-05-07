@@ -382,13 +382,6 @@ h2 {
   font-weight: 800;
 }
 
-.result-grid {
-  display: grid;
-  gap: 1px;
-  margin-bottom: 6px;
-  background: color-mix(in srgb, var(--accent) 24%, transparent);
-}
-
 .info-block,
 .style-block,
 .affix-block,
@@ -468,6 +461,14 @@ li::before {
   line-height: 1.75;
 }
 
+.object-summary-block p {
+  margin: 0;
+  color: #d7c6a5;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
 .visitor-note-block {
   margin-top: 0;
   border-color: rgba(215, 173, 83, 0.24);
@@ -479,9 +480,9 @@ li::before {
 .visitor-note-block p {
   margin: 0;
   color: var(--ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 800;
-  line-height: 1.65;
+  line-height: 1.58;
 }
 
 .rumor-board {
@@ -572,7 +573,7 @@ li::before {
 .identity-block > div {
   border: 1px solid rgba(215, 173, 83, 0.16);
   border-radius: 8px;
-  padding: 14px;
+  padding: 12px;
   background:
     linear-gradient(135deg, rgba(215, 173, 83, 0.08), transparent),
     rgba(23, 21, 18, 0.74);
@@ -586,7 +587,7 @@ li::before {
 .identity-value {
   margin: 0;
   color: color-mix(in srgb, var(--accent-3) 74%, var(--ink));
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
   line-height: 1.35;
   text-shadow: 0 0 14px var(--glow);
@@ -596,15 +597,15 @@ li::before {
 .tavern-block p {
   margin: 0;
   color: #d7c6a5;
-  font-size: 14px;
-  line-height: 1.78;
+  font-size: 13px;
+  line-height: 1.7;
 }
 
 .npc-block p {
   margin: 0;
   color: var(--muted);
-  font-size: 14px;
-  line-height: 1.82;
+  font-size: 13px;
+  line-height: 1.72;
 }
 
 .npc-block strong {
