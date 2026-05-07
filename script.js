@@ -479,6 +479,7 @@ const I18N = {
     furniture: "核心家具",
     style: "装修风格说明",
     affixes: "稀有词条",
+    visitor: "访客留言",
     danger: "家宅危险等级",
     archive: "档案稀有度",
     neighbor: "邻居评价",
@@ -506,6 +507,7 @@ const I18N = {
     furniture: "Core Furnishings",
     style: "Style Notes",
     affixes: "Rare Affixes",
+    visitor: "Visitor Note",
     danger: "House Danger Level",
     archive: "Archive Rarity",
     neighbor: "Neighbor Notes",
@@ -556,6 +558,10 @@ const classLabel = document.querySelector("#classLabel");
 const className = document.querySelector("#className");
 const serialNumber = document.querySelector("#serialNumber");
 const themeName = document.querySelector("#themeName");
+const characterTitle = document.querySelector("#characterTitle");
+const archiveRegion = document.querySelector("#archiveRegion");
+const visitorTitle = document.querySelector("#visitorTitle");
+const visitorNote = document.querySelector("#visitorNote");
 const locationTitle = document.querySelector("#locationTitle");
 const furnitureTitle = document.querySelector("#furnitureTitle");
 const furnitureList = document.querySelector("#furnitureList");
@@ -727,6 +733,156 @@ const shareContent = {
   }
 };
 
+const identityLayer = {
+  zh: {
+    warlock: {
+      titles: ["暮色守门人", "地下室账本管理员", "黑蜡烛契约人"],
+      regions: ["暮色森林边缘", "银松森林旧路", "逆风小径下层"],
+      visitors: ["“这里的门从不真正锁上。”", "“有人凌晨三点还看见绿火亮着。”", "“旅店老板拒绝送餐到这里。”"],
+      codes: ["AZ-FEL", "AZ-DUSK", "DWD-RITE"]
+    },
+    paladin: {
+      titles: ["晨光守誓人", "旧礼拜堂看护者", "白石长椅主人"],
+      regions: ["北郡旧钟楼", "圣光礼拜堂后庭", "暴风城教堂区"],
+      visitors: ["“门槛像刚被祝福过。”", "“没人敢在这里赖账。”", "“壁炉旁的椅子会让人坐直。”"],
+      codes: ["SW-LGT", "AZ-OATH", "NTH-DAWN"]
+    },
+    rogue: {
+      titles: ["酒馆低语者", "不被旅店记录的人", "后巷钥匙保管人"],
+      regions: ["闪金镇后巷", "暴风城旧城区", "拉文霍德西仓"],
+      visitors: ["“访客回来后都说自己只是路过。”", "“这里的窗帘比主人更守口如瓶。”", "“账本上少了一页，但没人承认。”"],
+      codes: ["SW-SHD", "AZ-LOCK", "RVN-KEY"]
+    },
+    shaman: {
+      titles: ["风暴听屋人", "图腾旧坡看守", "四元素调停者"],
+      regions: ["雷霆崖旧坡", "纳格兰风口", "杜隆塔尔红土祭台"],
+      visitors: ["“门口的风先回答了问题。”", "“水盆说今晚不接待客人。”", "“这里的地板知道雷雨何时来。”"],
+      codes: ["THR-STO", "NAG-WND", "AZ-TOTM"]
+    },
+    deathKnight: {
+      titles: ["寒门守夜人", "黑锋旧钥持有人", "冷炉旁的租客"],
+      regions: ["阿彻鲁斯下层", "龙骨荒野霜门", "东瘟疫无名墓园"],
+      visitors: ["“这里的灯亮着，却没有温度。”", "“访客离开时鞋底结了霜。”", "“没人愿意把名字写进登记簿。”"],
+      codes: ["ACH-EBN", "AZ-FRST", "DK-VAULT"]
+    },
+    warrior: {
+      titles: ["战旗厅主人", "旧哨塔炉边人", "铁杯账本常客"],
+      regions: ["赤脊山旧哨塔", "阿拉希战旗坡", "暴风城兵营后院"],
+      visitors: ["“门一关，像有人敲响战鼓。”", "“这里的桌子不再接受挑战。”", "“访客进门前会先看墙上的斧头。”"],
+      codes: ["RED-IRON", "AZ-WAR", "STM-BRKS"]
+    },
+    hunter: {
+      titles: ["林径留痕者", "兽栏灯火主人", "鹰架旁的租客"],
+      regions: ["灰谷猎径尽头", "纳格兰饮水坡", "至高岭鹰巢下"],
+      visitors: ["“先敲门，后向鹰问好。”", "“肉干不见了，没人追查。”", "“餐桌主位看起来已经有人占了。”"],
+      codes: ["ASH-TRK", "NAG-HUNT", "AZ-BEAST"]
+    },
+    mage: {
+      titles: ["奥术租客", "蓝晶阁楼记录员", "迟到三天的人"],
+      regions: ["达拉然下层", "艾萨拉蓝晶断崖", "苏拉玛后厅"],
+      visitors: ["“有人凌晨三点还看见灯亮着。”", "“门牌昨天短暂出现在另一座城。”", "“茶壶比主人更准时。”"],
+      codes: ["DAL-ARC", "AZ-RUNE", "SUR-GLS"]
+    },
+    priest: {
+      titles: ["低声告解人", "晨光帷幕后的人", "双面圣典守书者"],
+      regions: ["沙塔斯烛光台", "暴风城侧廊", "幽暗城破损圣龛"],
+      visitors: ["“进门后，大家都会小声一点。”", "“镜子没有回答第二个问题。”", "“访客说自己只是来坐一会儿。”"],
+      codes: ["AZ-VEIL", "SHA-MRCY", "SW-PRAY"]
+    },
+    druid: {
+      titles: ["沼泽梦行者", "月井边的邻居", "藤蔓钥匙持有人"],
+      regions: ["月光林地旧坡", "瓦尔莎拉根须间", "海加尔晨露石阶"],
+      visitors: ["“地毯今天又长出一点东西。”", "“访客回来时带着睡意和苔藓。”", "“没人解释屋里为何总有月光。”"],
+      codes: ["SLV-MOON", "AZ-DREAM", "VAL-ROOT"]
+    },
+    monk: {
+      titles: ["竹溪听钟人", "晨茶院看守", "酒坛旁的安静租客"],
+      regions: ["昆莱山云阶", "翡翠林竹溪", "四风谷田埂边"],
+      visitors: ["“这里吵不起来，茶太香了。”", "“有人坐下后忘了讨租。”", "“晨钟响过，连扫帚都站直了。”"],
+      codes: ["JDE-TEA", "KL-MIST", "AZ-BREW"]
+    },
+    demonHunter: {
+      titles: ["裂痕边缘居住者", "盲眼门卫", "邪火走廊主人"],
+      regions: ["黑暗神殿断墙", "破碎海滩焦阶", "费伍德绿影"],
+      visitors: ["“墙上的裂缝像在看人。”", "“没人愿意背对那面战刃墙。”", "“访客说椅子审判了他。”"],
+      codes: ["BT-FEL", "AZ-RIFT", "ILL-BLD"]
+    },
+    evoker: {
+      titles: ["青铜档案携带者", "龙鳞厅守卷人", "明天来过的租客"],
+      regions: ["瓦德拉肯沙漏廊", "禁忌离岛风墙", "碧蓝林海晶坡"],
+      visitors: ["“沙漏说访客已经迟到了。”", "“有人在屋顶看见翅膀影子。”", "“椅子按颜色排好了座次。”"],
+      codes: ["VAL-BRZ", "AZ-SCALE", "DRG-OATH"]
+    }
+  },
+  en: {
+    warlock: {
+      titles: ["Dusk Gatekeeper", "Basement Ledger-Keeper", "Black Candle Contractor"],
+      regions: ["Duskwood Edge", "Old Silverpine Road", "Lower Deadwind Pass"],
+      visitors: ["“The door here never truly locks.”", "“Someone saw greenfire burning at three bells.”", "“The innkeeper refuses to deliver food here.”"]
+    },
+    paladin: {
+      titles: ["Dawn Oathkeeper", "Old Chapel Warden", "Keeper of the White Bench"],
+      regions: ["Northshire Bell Yard", "Light's Hope Rear Garden", "Stormwind Cathedral Walk"],
+      visitors: ["“The threshold feels freshly blessed.”", "“No one dares skip a bill here.”", "“The hearth chair makes visitors sit straighter.”"]
+    },
+    rogue: {
+      titles: ["Tavern Whisperer", "The Tenant Not Written Down", "Back-Lane Keyholder"],
+      regions: ["Goldshire Back Lane", "Old Town of Stormwind", "Ravenholdt West Storehouse"],
+      visitors: ["“Visitors return saying they only passed by.”", "“The curtains keep better secrets than the owner.”", "“A ledger page is missing. Nobody admits it.”"]
+    },
+    shaman: {
+      titles: ["Stormlistener", "Old Totem Rise Keeper", "Mediator of Four Elements"],
+      regions: ["Old Rise of Thunder Bluff", "Nagrand Windbreak", "Durotar Red-Earth Altar"],
+      visitors: ["“The wind at the door answered first.”", "“The water bowl says no guests tonight.”", "“The floor knows when rain is coming.”"]
+    },
+    deathKnight: {
+      titles: ["Cold-Door Watcher", "Ebon Keybearer", "Tenant by the Dead Hearth"],
+      regions: ["Lower Acherus", "Dragonblight Frost Door", "Nameless Plaguelands Yard"],
+      visitors: ["“The lamps are lit, but give no warmth.”", "“Visitors leave with frost on their boots.”", "“No one signs the register willingly.”"]
+    },
+    warrior: {
+      titles: ["Banner-Hall Keeper", "Old Watchtower Hearthman", "Iron Cup Regular"],
+      regions: ["Redridge Old Watch", "Arathi Banner Slope", "Stormwind Barracks Yard"],
+      visitors: ["“When the door shuts, it sounds like a war drum.”", "“The table no longer accepts challenges.”", "“Visitors check the axe wall before speaking.”"]
+    },
+    hunter: {
+      titles: ["Trailmark Keeper", "Beast-Lamp Warden", "Lodger by the Hawk Perch"],
+      regions: ["Ashenvale Trail End", "Nagrand Watering Slope", "Below the Highmountain Eyrie"],
+      visitors: ["“Knock first. Greet the hawk second.”", "“The jerky vanished. No one investigated.”", "“The head seat at dinner appears claimed.”"]
+    },
+    mage: {
+      titles: ["Arcane Lodger", "Blueglass Attic Clerk", "The One Three Days Late"],
+      regions: ["Lower Dalaran", "Azshara Blueglass Cliff", "Suramar Rear Salon"],
+      visitors: ["“Someone saw the lamp burning at three bells.”", "“The address briefly appeared in another city.”", "“The teapot keeps better time than the tenant.”"]
+    },
+    priest: {
+      titles: ["Low-Voiced Confessor", "Keeper Behind the Dawn Veil", "Twin-Tome Warden"],
+      regions: ["Shattrath Candle Table", "Stormwind Side Aisle", "Broken Undercity Shrine"],
+      visitors: ["“Everyone speaks softer after entering.”", "“The mirror did not answer the second question.”", "“Visitors say they only came to sit awhile.”"]
+    },
+    druid: {
+      titles: ["Marsh Dreamwalker", "Neighbor by the Moonwell", "Vine-Key Holder"],
+      regions: ["Old Moonglade Slope", "Val'sharah Rootway", "Hyjal Dew Steps"],
+      visitors: ["“The rug grew something again.”", "“Visitors return sleepy and moss-marked.”", "“No one explains why moonlight stays indoors.”"]
+    },
+    monk: {
+      titles: ["Bamboo Bell Listener", "Morning Tea Warden", "Quiet Lodger by the Brew Jar"],
+      regions: ["Kun-Lai Cloud Steps", "Jade Forest Bamboo Creek", "Four Winds Field Ridge"],
+      visitors: ["“Arguments do not last here. The tea is too good.”", "“Someone sat down and forgot to ask for rent.”", "“After the morning bell, even the broom stood straight.”"]
+    },
+    demonHunter: {
+      titles: ["Rift-Edge Dweller", "Blind Doorwarden", "Keeper of the Fel Hall"],
+      regions: ["Black Temple Broken Wall", "Broken Shore Scorched Step", "Felwood Green Shadow"],
+      visitors: ["“The crack in the wall looks back.”", "“No one turns their back to the glaive wall.”", "“A visitor says the chair judged him.”"]
+    },
+    evoker: {
+      titles: ["Bronze Archive Carrier", "Scalehall Record-Keeper", "The Tenant Who Came Tomorrow"],
+      regions: ["Valdrakken Hourglass Hall", "Forbidden Reach Wind Wall", "Azure Span Crystal Slope"],
+      visitors: ["“The hourglass says the guest is already late.”", "“Someone saw wing shadows over the roof.”", "“The chairs arranged themselves by color.”"]
+    }
+  }
+};
+
 function pickItems(items, count) {
   const shuffled = [...items].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
@@ -760,9 +916,10 @@ function pickWeightedIndex(weights) {
   return 0;
 }
 
-function generateSerial() {
+function generateSerial(key) {
   const digits = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
-  return `AZ-2026-0507-${digits}`;
+  const codes = identityLayer.zh[key].codes;
+  return `${pickItems(codes, 1)[0]}-${digits}`;
 }
 
 function renderList(element, items) {
@@ -839,6 +996,10 @@ function identityFor(key) {
   return shareContent[currentLang][key];
 }
 
+function homesteadIdentityFor(key) {
+  return identityLayer[currentLang][key];
+}
+
 function updateStaticText() {
   document.documentElement.lang = t("htmlLang");
   brandName.textContent = t("brand");
@@ -849,6 +1010,7 @@ function updateStaticText() {
   furnitureTitle.textContent = t("furniture");
   styleTitle.textContent = t("style");
   affixTitle.textContent = t("affixes");
+  visitorTitle.textContent = t("visitor");
   dangerTitle.textContent = t("danger");
   archiveTitle.textContent = t("archive");
   neighborTitle.textContent = t("neighbor");
@@ -869,12 +1031,16 @@ function renderCurrentPlan() {
   const data = contentFor(currentPlan.key);
   const meta = metaFor(currentPlan.key);
   const identity = identityFor(currentPlan.key);
+  const homesteadIdentity = homesteadIdentityFor(currentPlan.key);
   const npc = meta.npcs[currentPlan.npcIndex];
 
   document.body.dataset.theme = currentPlan.key;
   className.textContent = `${tClass(currentPlan.key)} ${t("classSuffix")}`;
   serialNumber.textContent = currentPlan.serial;
   themeName.textContent = data.themes[currentPlan.themeIndex];
+  characterTitle.textContent = homesteadIdentity.titles[currentPlan.characterTitleIndex % homesteadIdentity.titles.length];
+  archiveRegion.textContent = homesteadIdentity.regions[currentPlan.archiveRegionIndex % homesteadIdentity.regions.length];
+  visitorNote.textContent = homesteadIdentity.visitors[currentPlan.visitorNoteIndex % homesteadIdentity.visitors.length];
   locationTitle.textContent = data.locationTitle;
   renderList(furnitureList, currentPlan.furnitureIndices.map((index) => data.furniture[index]));
   renderList(coordsList, currentPlan.coordIndices.map((index) => data.coords[index]));
@@ -929,11 +1095,16 @@ function generatePlan() {
   const meta = classMeta[key];
   const npc = pickItems(meta.npcs, 1)[0];
   const affixes = generateAffixes(plan);
+  const rumorPoolSize = Math.min(plan.rumors.length, EN_CONTENT[key].rumors.length);
+  const rumorPool = Array.from({ length: rumorPoolSize });
 
   currentPlan = {
     key,
-    serial: generateSerial(),
+    serial: generateSerial(key),
     themeIndex: pickIndices(plan.themes, 1)[0],
+    characterTitleIndex: pickIndices(identityLayer.zh[key].titles, 1)[0],
+    archiveRegionIndex: pickIndices(identityLayer.zh[key].regions, 1)[0],
+    visitorNoteIndex: pickIndices(identityLayer.zh[key].visitors, 1)[0],
     furnitureIndices: pickIndices(plan.furniture, 3),
     coordIndices: pickIndices(plan.coords, 3),
     affixes,
@@ -942,7 +1113,7 @@ function generatePlan() {
     neighborIndex: pickIndices(shareContent.zh[key].neighbor, 1)[0],
     tavernIndex: pickIndices(shareContent.zh[key].tavern, 1)[0],
     styleIndex: Math.floor(Math.random() * 2),
-    rumorIndices: pickIndices(plan.rumors, Math.floor(Math.random() * 2) + 2),
+    rumorIndices: pickIndices(rumorPool, Math.floor(Math.random() * 2) + 2),
     npcIndex: meta.npcs.indexOf(npc),
     cornerNote: pickItems(cornerNotes, 1)[0]
   };
@@ -1082,6 +1253,10 @@ function savePlanImage(options = {}) {
   const meta = metaFor(currentPlan.key);
   const npc = meta.npcs[currentPlan.npcIndex];
   const identity = identityFor(currentPlan.key);
+  const homesteadIdentity = homesteadIdentityFor(currentPlan.key);
+  const currentCharacterTitle = homesteadIdentity.titles[currentPlan.characterTitleIndex % homesteadIdentity.titles.length];
+  const currentArchiveRegion = homesteadIdentity.regions[currentPlan.archiveRegionIndex % homesteadIdentity.regions.length];
+  const currentVisitorNote = homesteadIdentity.visitors[currentPlan.visitorNoteIndex % homesteadIdentity.visitors.length];
   const furniture = currentPlan.furnitureIndices.map((index) => data.furniture[index]);
   const locations = currentPlan.coordIndices.map((index) => data.coords[index]);
   const rumors = currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]);
@@ -1091,7 +1266,7 @@ function savePlanImage(options = {}) {
 
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
-  canvas.height = 1920;
+  canvas.height = 2160;
   const ctx = canvas.getContext("2d");
   const width = canvas.width;
   const padding = 72;
@@ -1144,10 +1319,24 @@ function savePlanImage(options = {}) {
   ctx.font = "800 30px sans-serif";
   ctx.fillText(`${tClass(currentPlan.key)} · ${t("posterClassSuffix")}`, padding, y);
 
-  y += 76;
+  y += 50;
+  ctx.fillStyle = "rgba(215, 173, 83, 0.92)";
+  ctx.font = "800 30px sans-serif";
+  ctx.fillText(currentCharacterTitle, padding, y);
+  ctx.fillStyle = "rgba(215, 198, 165, 0.7)";
+  ctx.font = "700 24px sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillText(currentArchiveRegion, width - padding, y);
+  ctx.textAlign = "left";
+
+  y += 58;
   ctx.fillStyle = "#f4ead8";
   ctx.font = "900 68px sans-serif";
   y = drawWrappedText(ctx, data.themes[currentPlan.themeIndex], padding, y, width - padding * 2 - 70, 78, 3) + 26;
+
+  ctx.fillStyle = "rgba(244, 234, 216, 0.86)";
+  ctx.font = "700 28px sans-serif";
+  y = drawWrappedText(ctx, currentVisitorNote, padding, y, width - padding * 2, 38, 2) + 12;
 
   ctx.fillStyle = "rgba(215, 173, 83, 0.9)";
   ctx.fillRect(padding, y, width - padding * 2, 3);

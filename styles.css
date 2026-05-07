@@ -357,6 +357,31 @@ h2 {
   letter-spacing: 0;
 }
 
+.header-identity {
+  display: grid;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.character-title,
+.archive-region {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.character-title {
+  color: color-mix(in srgb, var(--accent-3) 70%, var(--ink));
+  font-size: 15px;
+  font-weight: 900;
+  text-shadow: 0 0 14px var(--glow);
+}
+
+.archive-region {
+  color: rgba(215, 198, 165, 0.72);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .result-grid {
   display: grid;
   gap: 1px;
@@ -367,6 +392,7 @@ h2 {
 .info-block,
 .style-block,
 .affix-block,
+.visitor-note-block,
 .identity-block,
 .neighbor-block,
 .tavern-block,
@@ -378,6 +404,7 @@ h2 {
 .info-block,
 .style-block,
 .affix-block,
+.visitor-note-block,
 .identity-block,
 .neighbor-block,
 .tavern-block,
@@ -422,6 +449,7 @@ li::before {
 
 .style-block,
 .affix-block,
+.visitor-note-block,
 .identity-block,
 .neighbor-block,
 .tavern-block,
@@ -438,6 +466,22 @@ li::before {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.75;
+}
+
+.visitor-note-block {
+  margin-top: 0;
+  border-color: rgba(215, 173, 83, 0.24);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 72%),
+    rgba(33, 31, 26, 0.98);
+}
+
+.visitor-note-block p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.65;
 }
 
 .rumor-board {
@@ -621,6 +665,7 @@ li::before {
   .info-block,
   .style-block,
   .affix-block,
+  .visitor-note-block,
   .neighbor-block,
   .tavern-block,
   .npc-block {
@@ -629,6 +674,7 @@ li::before {
 
   .style-block,
   .affix-block,
+  .visitor-note-block,
   .identity-block,
   .neighbor-block,
   .tavern-block,
