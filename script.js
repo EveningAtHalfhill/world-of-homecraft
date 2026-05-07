@@ -131,6 +131,217 @@ const plans = {
   }
 };
 
+const EN_CONTENT = {
+  warlock: {
+    className: "Warlock",
+    themes: ["Felwhisper Cellar", "The Room Below the Candlelight", "Duskcalling Shack"],
+    furniture: ["Fel Candlestand", "Runed Summoning Rug", "Demonology Bookcase", "Violet Ember Lantern", "Blackwood Alchemy Table", "Voidglass Cabinet"],
+    locationTitle: "Places Neighbors Avoid",
+    coords: ["Abandoned rite-house in the Swamp of Sorrows", "The lower crypt beneath Deadwind Pass", "Near a scorched farmhouse in Silverpine", "The back door of a lampless cottage in Duskwood"],
+    styles: ["Dark timber, green fel glimmers, and violet candlelight make the room feel private in the wrong way. The rug belongs in the center, where every guest can pretend not to notice the circle.", "Bookshelves should crowd the walls, with candles tucked into corners and one locked cabinet that nobody asks about twice."],
+    rumors: ["The neighbors are used to whispering after midnight. That does not mean they like it.", "Someone claims the cellar has more tenants than the deed admits.", "The courier refuses to place parcels in the middle of the circle.", "The sulfur smell has moved beyond decoration.", "A tavern regular says the bookcase breathes when the moon is low.", "The candles relight themselves after every cleaning."],
+    affixes: ["Void Portal Alcove", "Legendary Archive Nook", "Demon Contract Corner", "Soul Shard Strongbox", "Fel Hearth", "Forbidden Summoning Room", "Shadowbound Writing Desk"],
+    mythicAffixes: ["Legacy of the Burning Legion", "Whisper of Sargeras", "Deed from the Twisting Nether"],
+    npcs: [
+      { name: "Gul'dan", comment: "Not enough power, but the cellar is excellent for private bargains." },
+      { name: "Wilfred", comment: "The circle is placed well. Just try not to summon the wrong guest again." },
+      { name: "Kanrethad", comment: "Good fel lighting. The psychological pressure on visitors is acceptable." }
+    ]
+  },
+  paladin: {
+    className: "Paladin",
+    themes: ["Golden Guardian Manor", "Oathlight Chapel Hall", "Silver Hearth Refectory"],
+    furniture: ["Silver Hand Wall Seal", "Gilded Chapel Bench", "Lectern of Oaths", "Dawnweave Banner", "Shield Reliquary", "Blessed Candle Stand"],
+    locationTitle: "Blessed Homestead Sites",
+    coords: ["Beside the old bell tower at Northshire Abbey", "The rear garden of Light's Hope Chapel", "Stone steps near the Cathedral District", "A worn prayer hall at Tyr's Hand"],
+    styles: ["White stone, warm gold, and a sense of order should lead every eye toward the oath table. Nothing here needs to shout; the room judges quietly.", "Benches belong in pairs, banners high on the wall, and every candle should look like it was lit for a reason."],
+    rumors: ["Passing guards straighten their backs near the door.", "The chairs are said to encourage confession after long dinners.", "The neighbors complain that the windows glow like dawn forgot to leave.", "Even the coasters appear to follow military discipline.", "A child swears the hearth chases bad dreams away.", "Someone bowed at the entrance and only meant to ask directions."],
+    affixes: ["Chapel Nook", "Oathbound Corridor", "Cleansing Font", "Wall of Knightly Honors", "Guild Council Table", "Blessed Supper Table", "Dawn Prayer Seat"],
+    mythicAffixes: ["Silver Hand Approval", "Light-Chosen Deed", "Echo of the Naaru"],
+    npcs: [
+      { name: "Uther", comment: "A disciplined hall. Enough benches for a properly solemn meeting." },
+      { name: "Tirion", comment: "Good for oaths, and for reminding guests to wipe their boots." },
+      { name: "Turalyon", comment: "The holy lighting is stable. It may be expensive in candles." }
+    ]
+  },
+  rogue: {
+    className: "Rogue",
+    themes: ["Black Market Office", "Old Town Safehouse", "Back-Alley Trophy Room"],
+    furniture: ["Lockpick Worktable", "Quiet Ledger Desk", "Knife Display Case", "Dark Curtain Partition", "Contraband Crate Rack", "Coin-Worn Tavern Chair"],
+    locationTitle: "Last Reported Sightings",
+    coords: ["The sewer mouth below Stormwind's Old Town", "A wooden bridge behind the Ratchet tavern", "A ruined storehouse west of Ravenholdt", "The shadowed back door by Booty Bay docks"],
+    styles: ["Leather, dull brass, and low green lamplight keep the room useful without making it honest. Every wall should look ordinary enough to be suspicious.", "The best safehouse feels cramped on purpose: one table for work, one curtain for lies, and one exit nobody admits exists."],
+    rumors: ["Nobody agrees which door is the front door.", "A courier left a parcel and refused a receipt.", "They say the locks speak more clearly than the owner.", "Coins are heard inside, but visitors are rarely seen.", "One wall looks too normal, which is why everyone distrusts it.", "A guard forgot what he was inspecting halfway down the alley."],
+    affixes: ["Questionable Underpass", "Black Market Side Door", "Trophy Wall from Bad Decisions", "Lockbox Collection", "Hidden Cellar", "Informant Ledger Table", "Shadowstep Window"],
+    mythicAffixes: ["Ravenholdt Private Deed", "Legendary Black Market Compartment", "Uncrowned Passage Right"],
+    npcs: [
+      { name: "Valeera", comment: "Good curtains. Useful for hiding, and for pretending you are not home." },
+      { name: "Garona", comment: "Too few exits. A proper safehouse needs three excuses and four ways out." },
+      { name: "VanCleef", comment: "The crates are arranged well. Nobody should open them without permission." }
+    ]
+  },
+  shaman: {
+    className: "Shaman",
+    themes: ["Four-Winds Totem Lodge", "Stormdrum Hearth", "Tide-and-Ember Ritual Room"],
+    furniture: ["Elemental Totem Set", "Storm Drum", "Waterstone Basin", "Ember Bowl Stand", "Hide Circle Rug", "Thunder-Carved Stone Post"],
+    locationTitle: "Where the Elements Linger",
+    coords: ["A wind-cut totem slope in Nagrand", "Beside the old drum circle on Thunder Bluff", "Near a tide basin in Vashj'ir", "A red-earth altar before rain in Durotar"],
+    styles: ["Wood, stone, hide, and water should share the room without competing. Place the totems like quiet witnesses, not decorations.", "A good shaman home feels balanced: the fire has a reason, the water has an opinion, and the floor remembers old drums."],
+    rumors: ["Weather reports fail around this house.", "The basin occasionally disagrees with guests.", "The neighbors cannot tell thunder from furniture moving anymore.", "Every totem looks as if it knows something.", "The fire bowl and water basin may have argued all night.", "The wind opens the door when the owner is away."],
+    affixes: ["Elemental Council Seat", "Storm Meditation Nook", "Ancestor Whisper Wall", "Tide-Cleansing Basin", "Lava-Warm Hearth", "Stormwatch Platform", "Totem Memory Post"],
+    mythicAffixes: ["Elemental Lord Co-Signature", "Echo of the Throne of Storms", "Earthen Ring Blessing"],
+    npcs: [
+      { name: "Thrall", comment: "The balance is good, provided the neighbors accept thunder after midnight." },
+      { name: "Rehgar", comment: "The drum is well placed. No one can pretend they missed the meeting." },
+      { name: "Nobundo", comment: "The water and fire are far enough apart. That is progress." }
+    ]
+  },
+  deathKnight: {
+    className: "Death Knight",
+    themes: ["Frozen War Room", "Ebon Coldforge Quarters", "Runebound Crypt Hearth"],
+    furniture: ["Ebon Rune Table", "Frostless Brazier", "Banner of the Dead", "Darksteel Weapon Rack", "Blue Rune Floorstone", "Ashen Throne Chair"],
+    locationTitle: "Places Even Braziers Cannot Warm",
+    coords: ["A cold iron corridor below Acherus", "An abandoned watchpost in Icecrown", "Outside a nameless graveyard in the Plaguelands", "Behind a frost-covered stone door in Dragonblight"],
+    styles: ["Dark metal, stone, and blue rune light should make warmth feel like a rumor. The weapon rack belongs where guests see it immediately.", "Keep the room disciplined and cold. A death knight home should not be cozy; it should be memorable."],
+    rumors: ["The braziers here have never been warm.", "Metal scraping is heard after midnight.", "The neighbors suspect something is buried below.", "No one volunteers to stay past midnight.", "The milkman says frost appears on schedule.", "The chair has made several living guests reconsider comfort."],
+    affixes: ["Frozen Armory", "Memorial Wall of the Dead", "Ebon Judgment Seat", "Runeforge Corner", "Frost Throne Nook", "Soul-Sealed Cabinet", "Scourge Banner Hall"],
+    mythicAffixes: ["Ebon Council Collection", "Lich King's Cold Storage Permit", "Upper Acherus Key"],
+    npcs: [
+      { name: "Darion", comment: "It lacks a little Ebon Blade presence, but the chill will repel salesmen." },
+      { name: "Mograine", comment: "Lower the weapon wall. Visitors should understand your position quickly." },
+      { name: "Koltira", comment: "Perfect temperature. Living guests may disagree." }
+    ]
+  },
+  warrior: {
+    className: "Warrior",
+    themes: ["Ironfront Barracks", "Battle Banner Hall", "Champion's Anvil House"],
+    furniture: ["War Banner Wall", "Greataxe Rack", "Anvil Repair Bench", "Champion's Round Table", "Heavy Training Dummy", "Red Honor Runner"],
+    locationTitle: "Common Encampments",
+    coords: ["Beside an old watchtower in Redridge", "A timber palisade camp on the Ashenvale front", "Behind the Stormwind barracks", "Under a faded battle standard in Arathi"],
+    styles: ["Iron, leather, and red cloth set the tone. The room should feel ready to hold a meeting or survive one.", "Leave room to move. A warrior hall is not complete until the furniture looks like it could endure an argument."],
+    rumors: ["The door hinge sounds like a war horn.", "Every slammed door feels like a siege beginning.", "The training dummy has more experience than several adventurers.", "The table may once have served as a shield.", "Nobody sets a cup beneath the war banner.", "A visitor asked for directions and was assigned warm-ups."],
+    affixes: ["Gladiator Ready Room", "Battlecry Echo Hall", "Trophy Wall", "Legendary Weapon Rack", "Ironblood Council Table", "Duel Circle", "War Banner Gallery"],
+    mythicAffixes: ["Valarjar Banner Right", "Champion's Trial Seat", "Titan-Certified Training Yard"],
+    npcs: [
+      { name: "Varian", comment: "The banner is clear. Three steps inside and no one mistakes this place for soft." },
+      { name: "Saurfang", comment: "Good training dummy placement. The walls will suffer less." },
+      { name: "Muradin", comment: "Fine anvil. The ale storage could use deeper strategy." }
+    ]
+  },
+  hunter: {
+    className: "Hunter",
+    themes: ["Wild Tracker Lodge", "Beastyard Cabin", "Hawkeye Hunting Camp"],
+    furniture: ["Beast Pen Rail", "Leather Bedroll", "Bow and Quiver Wall", "Campfire Cookstand", "Trail Map Table", "Hawk Perch"],
+    locationTitle: "Paths Beasts Remember",
+    coords: ["A pine lodge at the end of an Ashenvale trail", "A clefthoof watering slope in Nagrand", "A hunter camp below the Highmountain eyries", "Beside an old target near Loch Modan"],
+    styles: ["Raw wood, hides, and open air keep the place honest. The pet corner should look more lived-in than the owner's bed.", "Do not make the room too orderly. A true hunting lodge carries tracks, feathers, and one unexplained bowl."],
+    rumors: ["The pet area may be larger than the bedroom.", "Someone saw a bear take the head seat at dinner.", "The jerky disappearance remains unsolved.", "The neighbors complain about wolf howls at night.", "The courier checks whether the owl is the doorman.", "There are more footprints than guests."],
+    affixes: ["Rare Beast Pen", "Hawk Watch Post", "Trail Cookfire", "Tracking Map", "Great Beast Trophy Wall", "Hidden Forest Entry", "Quiver Cabinet"],
+    mythicAffixes: ["Loa-Beast Approval", "Great Migration Route", "Ancient Hunting Ground Contract"],
+    npcs: [
+      { name: "Rexxar", comment: "The pet space should be larger. Honestly, the whole house could belong to them." },
+      { name: "Nesingwary", comment: "Good trophy wall. I recommend another wall for bigger stories." },
+      { name: "Sylvanas", comment: "The bow rack is conveniently placed. I will allow that." }
+    ]
+  },
+  mage: {
+    className: "Mage",
+    themes: ["Arcane Observatory", "Portal Parlor", "Blueglass Tower Study"],
+    furniture: ["Arcane Star Table", "Crystal Staff Stand", "Floating Book Stack", "Portal Circle Rug", "Conjured Tea Service", "Amethyst Wall Lamp"],
+    locationTitle: "Where Arcane Leaks Through",
+    coords: ["A quiet attic in a Dalaran book tower", "Beside a blue crystal cliff in Azshara", "A rear salon in an old Suramar townhouse", "A tower base where Azure Span starlight fails"],
+    styles: ["Blue light, violet glass, and impossible books should make the room feel intelligent before it feels comfortable.", "Place the star table where it can dominate the room. Everything else may orbit it politely."],
+    rumors: ["Visitors complain the washroom door sometimes teleports.", "The teapot is said to pour itself.", "Someone entered the cellar and was late by three days.", "The bookshelves hold arcane debates after midnight.", "The windows show a sky not local to this city.", "The stairs may choose destinations."],
+    affixes: ["Private Portal", "Arcane Star Dome", "Legendary Archive", "Polymorph Experiment Corner", "Conjured Dessert Table", "Crystal Charging Pillar", "Timewarp Clock"],
+    mythicAffixes: ["Kirin Tor Star Registry", "Guardian Library Privilege", "Titan-Certified Arcane Circuit"],
+    npcs: [
+      { name: "Khadgar", comment: "The arcane structure is stable. More stable than some portals I know." },
+      { name: "Jaina", comment: "Elegant blue-violet work. Calm as a prepared blizzard." },
+      { name: "Medivh", comment: "Good archive. I hope you know which books not to open." }
+    ]
+  },
+  priest: {
+    className: "Priest",
+    themes: ["Shadow Confession Study", "Dawnlit Prayer Room", "Quiet Mercy Parlor"],
+    furniture: ["White Veil Drapery", "Gilded Prayer Chair", "Shadow Candle", "Mercy Vase", "Two-Faced Tome Stand", "Softlight Wall Lamp"],
+    locationTitle: "Where Prayers Are Heard in Low Voices",
+    coords: ["A side aisle in Stormwind's Cathedral District", "Beside a candlelit petition table in Shattrath", "Before a broken shrine in old Undercity", "A quiet room behind white curtains in Suramar"],
+    styles: ["Let gold light and gray violet shadow share the room. The best priestly spaces feel calm until you notice what the mirror reflects.", "Use veils and soft lamps to divide mercy from confession. Neither side should fully trust the other."],
+    rumors: ["Visitors lower their voices at the door.", "The mirror sometimes offers life advice.", "The neighbors cannot tell prayer from a meeting.", "The shadowed corner is colder by half a breath.", "The prayer chair understands sighing.", "A courier left feeling forgiven."],
+    affixes: ["Confession Nook", "Shadow Whisper Corner", "Mercy Meditation Seat", "Tome Wall", "Soul-Soothing Alcove", "Dawn Prayer Window", "Void Confession Mirror"],
+    mythicAffixes: ["Naaru Soft Blessing", "Void Whisper License", "Light-and-Shadow Dual Seal"],
+    npcs: [
+      { name: "Anduin", comment: "A good place for healing, and perhaps for reconsidering the furniture budget." },
+      { name: "Velen", comment: "The light and shadow are balanced. I would clean the mirror." },
+      { name: "Alonsus", comment: "Enough prayer chairs for a raid leader under pressure." }
+    ]
+  },
+  druid: {
+    className: "Druid",
+    themes: ["Emerald Root House", "Moonwell Conservatory", "Wildshape Garden Room"],
+    furniture: ["Living Wood Table", "Moonwell Basin", "Vine Lantern", "Wild Hide Rug", "Dreambloom Rack", "Oak Storage Chest"],
+    locationTitle: "Where Moonlight Seems to Rest",
+    coords: ["The grass slope behind a Moonglade moonwell", "Between old roots in Val'sharah", "Beside a half-awake flowerbed in the Dream", "Under dew-wet steps on Hyjal"],
+    styles: ["Green, gold, and living wood should make the house feel grown rather than built.", "Leave the edges soft. A druid room works best when the furniture seems to have wandered into place."],
+    rumors: ["The plants may move when nobody watches.", "Guests keep falling asleep on the floor.", "No one explains why moonlight is always present.", "Small mushrooms appear in the rug.", "The tree outside was not there yesterday.", "Vines drag misplaced shoes away."],
+    affixes: ["Emerald Dream Balcony", "Moonwell Rest Corner", "Shapeshift Nap Mat", "Ancient Tree Door", "Herbal Conservatory", "Starwatch Platform", "Wild Claw Wall"],
+    mythicAffixes: ["Elune's Moonlit Favor", "Permanent Emerald Terrace", "Cenarion Ancient Deed"],
+    npcs: [
+      { name: "Malfurion", comment: "Nature and stillness are balanced. The vines may claim the kitchen." },
+      { name: "Ysera", comment: "Gentle dream scent. Good for sleeping, and for missing appointments." },
+      { name: "Hamuul", comment: "The plants are healthy. No reckless fire magic, I see." }
+    ]
+  },
+  monk: {
+    className: "Monk",
+    themes: ["Quiet Bamboo Teahouse", "Jade Training Courtyard", "Cloudbrew Wayside Room"],
+    furniture: ["Bamboo Screen", "Jade Tea Table", "Training Post", "Brewmaster Jar", "Meditation Cushion", "Cloud-Painted Lantern"],
+    locationTitle: "Quiet Places for Meditation",
+    coords: ["Misty stone steps in Kun-Lai", "Beside a bamboo creek in the Jade Forest", "An old morning courtyard on the Wandering Isle", "A field ridge in the Valley of the Four Winds"],
+    styles: ["Bamboo, jade, and warm wood should leave room for silence. The tea table is the center; the training post waits at the edge.", "Do not crowd the room. A monk dwelling should feel like it can breathe before it teaches."],
+    rumors: ["The tea scent makes arguments lose their words.", "The training post is stricter than some teachers.", "An empty cup appears near the brew jars.", "The morning bell convinced a neighbor to wake early.", "A courier learned two stances after delivering a letter.", "The cushion makes rent discussions difficult."],
+    affixes: ["Meditation Seat", "Brewmaster Private Jar", "Bamboo Practice Yard", "Yu'lon Blessing Corner", "Roll-Friendly Walkway", "Cloud Tea Table", "Morning Bell Gallery"],
+    mythicAffixes: ["Yu'lon-Taught Tea Seat", "Peak of Serenity Right", "Legendary Brew Cellar"],
+    npcs: [
+      { name: "Chen", comment: "The tea table is good. The brew jars are also good. The order may be reversed." },
+      { name: "Taran Zhu", comment: "Clear movement lines. Guests may survive the practice area." },
+      { name: "Taoshi", comment: "Quiet enough to hear the echo of rent." }
+    ]
+  },
+  demonHunter: {
+    className: "Demon Hunter",
+    themes: ["Blindwatch Sanctum", "Felrift Training Room", "Warglaive Shadow Hall"],
+    furniture: ["Fel Brazier", "Warglaive Wall Rack", "Darkflame Stone Table", "Demonhide Seat", "Green Crystal Lamp", "Broken Chain Wall"],
+    locationTitle: "Footholds by the Rift",
+    coords: ["Below an outer wall of the Black Temple", "Beside scorched steps on the Broken Shore", "In fel-shadow beneath Felwood trees", "Behind a ruined armory table on Mardum"],
+    styles: ["Fel green should cut through the room like a warning. Keep the furniture low, sharp, and ready to be judged.", "This is not a cozy home. It is a place where comfort arrived, saw the warglaives, and left."],
+    rumors: ["Passersby feel watched by the walls.", "The fel brazier makes ordinary shadows look guilty.", "The neighbors insist that crack is not decorative.", "No one turns their back on the glaive wall.", "Couriers write very neatly here.", "The sofa may have been judged."],
+    affixes: ["Eye Beam Line", "Warglaive Wall", "Fel Holding Cell", "Demon Trophy Cabinet", "Darkflame Meditation Slab", "Illidari Oath Hall", "Shattered Blade Escape Door"],
+    mythicAffixes: ["Burning Legion Relic", "Illidari High Alert", "Permanent Fel Rift"],
+    npcs: [
+      { name: "Illidan", comment: "You are not prepared. The warglaive wall is acceptable." },
+      { name: "Kayn", comment: "The brazier is bright enough that no one can call this warm." },
+      { name: "Altruis", comment: "Good training room. The sofa appears to have been condemned." }
+    ]
+  },
+  evoker: {
+    className: "Evoker",
+    themes: ["Bronze Dragonwing Gallery", "Emerald Oath Study", "Five-Flight Parlor"],
+    furniture: ["Dragon Scale Screen", "Bronze Hourglass Table", "Emerald Crystal Basin", "Wing-Woven Rug", "Oath Round Table", "Gem Hatchery Rack"],
+    locationTitle: "Sites Named in Old Draconic Records",
+    coords: ["Beside a weathered scale wall on the Forbidden Reach", "Under a bronze hourglass hall in Valdrakken", "Near a wind-singing stone ring on the Ohn'ahran Plains", "A crystal slope in the Azure Span"],
+    styles: ["Bronze and emerald should alternate like memory and life. The room needs air, light, and one object that feels older than the owner.", "Use a round table for oaths, a crystal basin for warmth, and enough scale texture to make guests sit carefully."],
+    rumors: ["The hourglass may keep better time than the steward.", "The scale screen seems to blink in candlelight.", "The neighbors report wingbeats on the roof.", "Couriers nod to the round table before leaving parcels.", "The chairs may rank themselves by flight color.", "The gem rack breathes very softly."],
+    affixes: ["Dragon Collection Nook", "Bronze Timeglass", "Emerald Healing Nest", "Five-Flight Oath Table", "Scale Display Wall", "Whelp Watching Perch", "Gem Hatchery Corner"],
+    mythicAffixes: ["Titan-Certified Dragon Nest", "Bronze Time Deed", "Five-Flight Co-Signature"],
+    npcs: [
+      { name: "Ebyssian", comment: "Good scale texture. Guests will admire it before sitting carefully." },
+      { name: "Chromie", comment: "Adorable hourglass table. I may have complimented it tomorrow already." },
+      { name: "Alexstrasza", comment: "A gentle balance of bronze and emerald. A home for serious living." }
+    ]
+  }
+};
+
 const classMeta = {
   warlock: {
     mythicAffixes: ["燃烧军团遗产", "萨格拉斯低语", "扭曲虚空房契"],
@@ -351,6 +562,10 @@ function pickItems(items, count) {
   return shuffled.slice(0, count);
 }
 
+function pickIndices(items, count) {
+  return items.map((_, index) => index).sort(() => Math.random() - 0.5).slice(0, count);
+}
+
 function pickWeighted(items) {
   const total = items.reduce((sum, item) => sum + item.weight, 0);
   let roll = Math.random() * total;
@@ -383,7 +598,7 @@ function renderAffixes(affixes) {
     const badge = document.createElement("span");
     badge.className = "affix-badge";
     badge.dataset.rarity = affix.rarity;
-    badge.innerHTML = `<span class="affix-rarity">${tRarity(affix.rarity)}</span>${affix.name}`;
+    badge.innerHTML = `<span class="affix-rarity">${tRarity(affix.rarity)}</span>${getAffixName(currentPlan.key, affix)}`;
     affixList.appendChild(badge);
   });
 }
@@ -396,12 +611,20 @@ function tClass(key) {
   return I18N[currentLang].classes[key] || plans[key].className;
 }
 
+function contentFor(key) {
+  return currentLang === "en" ? EN_CONTENT[key] : plans[key];
+}
+
+function metaFor(key) {
+  return currentLang === "en" ? EN_CONTENT[key] : classMeta[key];
+}
+
 function tRarity(rarity) {
   return I18N[currentLang].rarity[rarity] || rarity;
 }
 
 function tLocationTitle(title) {
-  return currentLang === "en" ? I18N.en.locationTitles[title] || title : title;
+  return currentLang === "en" ? title : title;
 }
 
 function tNote(note) {
@@ -431,32 +654,51 @@ function renderCurrentPlan() {
     return;
   }
 
+  const data = contentFor(currentPlan.key);
+  const meta = metaFor(currentPlan.key);
+  const npc = meta.npcs[currentPlan.npcIndex];
+
   document.body.dataset.theme = currentPlan.key;
   className.textContent = `${tClass(currentPlan.key)} ${t("classSuffix")}`;
   serialNumber.textContent = currentPlan.serial;
-  themeName.textContent = currentPlan.theme;
-  locationTitle.textContent = tLocationTitle(currentPlan.locationTitle);
-  renderList(furnitureList, currentPlan.furniture);
-  renderList(coordsList, currentPlan.coords);
+  themeName.textContent = data.themes[currentPlan.themeIndex];
+  locationTitle.textContent = data.locationTitle;
+  renderList(furnitureList, currentPlan.furnitureIndices.map((index) => data.furniture[index]));
+  renderList(coordsList, currentPlan.coordIndices.map((index) => data.coords[index]));
   renderAffixes(currentPlan.affixes);
-  styleDescription.textContent = currentPlan.style;
-  renderList(rumorList, currentPlan.rumors);
-  npcName.textContent = `${currentPlan.npc.name}:`;
-  npcComment.textContent = `“${currentPlan.npc.comment}”`;
+  styleDescription.textContent = getStyleText(data, currentPlan.styleIndex);
+  renderList(rumorList, currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]));
+  npcName.textContent = `${npc.name}:`;
+  npcComment.textContent = `“${npc.comment}”`;
   cornerNote.textContent = tNote(currentPlan.cornerNote);
+}
+
+function getStyleText(data, index) {
+  return data.styles ? data.styles[index % data.styles.length] : data.style;
+}
+
+function getAffixName(key, affix) {
+  const data = contentFor(key);
+  const meta = metaFor(key);
+  if (affix.mythic) {
+    return meta.mythicAffixes[affix.index];
+  }
+  return data.affixes[affix.index];
 }
 
 function generateAffixes(plan) {
   const count = Math.floor(Math.random() * 3) + 2;
   const meta = classMeta[classSelect.value];
-  const selected = pickItems(plan.affixes, count).map((name) => ({
-    name,
+  const selected = pickIndices(plan.affixes, count).map((index) => ({
+    index,
+    mythic: false,
     rarity: pickWeighted(rarityPool)
   }));
 
   if (Math.random() < 0.08) {
     selected[selected.length - 1] = {
-      name: pickItems(meta.mythicAffixes, 1)[0],
+      index: pickIndices(meta.mythicAffixes, 1)[0],
+      mythic: true,
       rarity: "神话"
     };
   }
@@ -473,16 +715,14 @@ function generatePlan() {
 
   currentPlan = {
     key,
-    className: plan.className,
     serial: generateSerial(),
-    theme: pickItems(plan.themes, 1)[0],
-    locationTitle: plan.locationTitle,
-    furniture: pickItems(plan.furniture, 3),
-    coords: pickItems(plan.coords, 3),
+    themeIndex: pickIndices(plan.themes, 1)[0],
+    furnitureIndices: pickIndices(plan.furniture, 3),
+    coordIndices: pickIndices(plan.coords, 3),
     affixes,
-    style: plan.style,
-    rumors: pickItems(plan.rumors, Math.floor(Math.random() * 2) + 2),
-    npc,
+    styleIndex: Math.floor(Math.random() * 2),
+    rumorIndices: pickIndices(plan.rumors, Math.floor(Math.random() * 2) + 2),
+    npcIndex: meta.npcs.indexOf(npc),
     cornerNote: pickItems(cornerNotes, 1)[0]
   };
 
@@ -569,6 +809,14 @@ function savePlanImage() {
     generatePlan();
   }
 
+  const data = contentFor(currentPlan.key);
+  const meta = metaFor(currentPlan.key);
+  const npc = meta.npcs[currentPlan.npcIndex];
+  const furniture = currentPlan.furnitureIndices.map((index) => data.furniture[index]);
+  const locations = currentPlan.coordIndices.map((index) => data.coords[index]);
+  const rumors = currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]);
+  const styleText = getStyleText(data, currentPlan.styleIndex);
+
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1620;
@@ -627,14 +875,14 @@ function savePlanImage() {
   y += 76;
   ctx.fillStyle = "#f4ead8";
   ctx.font = "900 68px sans-serif";
-  y = drawWrappedText(ctx, currentPlan.theme, padding, y, width - padding * 2 - 70, 78, 3) + 26;
+  y = drawWrappedText(ctx, data.themes[currentPlan.themeIndex], padding, y, width - padding * 2 - 70, 78, 3) + 26;
 
   ctx.fillStyle = "rgba(215, 173, 83, 0.9)";
   ctx.fillRect(padding, y, width - padding * 2, 3);
   y += 56;
 
-  y = drawSection(ctx, t("furniture"), currentPlan.furniture, padding, y, width - padding * 2);
-  y = drawSection(ctx, tLocationTitle(currentPlan.locationTitle), currentPlan.coords, padding, y, width - padding * 2);
+  y = drawSection(ctx, t("furniture"), furniture, padding, y, width - padding * 2);
+  y = drawSection(ctx, data.locationTitle, locations, padding, y, width - padding * 2);
 
   ctx.fillStyle = "#d7ad53";
   ctx.font = "700 24px sans-serif";
@@ -642,7 +890,7 @@ function savePlanImage() {
   y += 42;
   let badgeX = padding;
   currentPlan.affixes.forEach((affix) => {
-    const badgeWidth = drawPosterBadge(ctx, `${tRarity(affix.rarity)} · ${affix.name}`, affix.rarity, badgeX, y);
+    const badgeWidth = drawPosterBadge(ctx, `${tRarity(affix.rarity)} · ${getAffixName(currentPlan.key, affix)}`, affix.rarity, badgeX, y);
     badgeX += badgeWidth + 16;
     if (badgeX > width - padding - 260) {
       badgeX = padding;
@@ -657,10 +905,10 @@ function savePlanImage() {
   y += 42;
   ctx.fillStyle = accentTwo;
   ctx.font = "800 28px sans-serif";
-  ctx.fillText(`${currentPlan.npc.name}:`, padding, y);
+  ctx.fillText(`${npc.name}:`, padding, y);
   ctx.fillStyle = "rgba(244, 234, 216, 0.86)";
   ctx.font = "26px sans-serif";
-  y = drawWrappedText(ctx, `“${currentPlan.npc.comment}”`, padding + 132, y, width - padding * 2 - 132, 36, 3) + 20;
+  y = drawWrappedText(ctx, `“${npc.comment}”`, padding + 132, y, width - padding * 2 - 132, 36, 3) + 20;
 
   ctx.fillStyle = "#d7ad53";
   ctx.font = "700 24px sans-serif";
@@ -668,14 +916,14 @@ function savePlanImage() {
   y += 42;
   ctx.fillStyle = "#d7c6a5";
   ctx.font = "26px sans-serif";
-  currentPlan.rumors.forEach((rumor) => {
+  rumors.forEach((rumor) => {
     y = drawWrappedText(ctx, `✦ ${rumor}`, padding, y, width - padding * 2, 38, 2) + 8;
   });
   y += 10;
 
   ctx.fillStyle = "rgba(244, 234, 216, 0.82)";
   ctx.font = "22px sans-serif";
-  drawWrappedText(ctx, currentPlan.style, padding, y + 34, width - padding * 2, 34, 5);
+  drawWrappedText(ctx, styleText, padding, y + 34, width - padding * 2, 34, 5);
 
   ctx.fillStyle = "rgba(215, 198, 165, 0.48)";
   ctx.font = "20px sans-serif";
