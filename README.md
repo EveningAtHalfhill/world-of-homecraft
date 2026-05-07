@@ -106,6 +106,19 @@ Supported class records / 已收录职业档案：
 
 ## Run Locally / 本地运行
 
+## Official Site / 官方站点
+
+- https://worldofhomecraft.com
+- https://www.worldofhomecraft.com
+
+Cloudflare Pages fallback / Cloudflare Pages 备用入口：
+
+- https://world-of-homecraft.pages.dev
+
+Former GitHub Pages fallback / 旧 GitHub Pages 备用入口：
+
+- https://eveningathalfhill.github.io/world-of-homecraft/
+
 **EN**
 
 No backend.  
