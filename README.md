@@ -124,20 +124,14 @@ Former GitHub Pages fallback / 旧 GitHub Pages 备用入口：
 No backend.  
 No database.  
 No npm required.  
-Open `index.html`.
+Clone the repository and open `index.html` locally.
 
 **CN**
 
 无需后端。  
 无需数据库。  
 无需 npm。  
-直接打开 `index.html` 即可运行。
-
-Local path / 本地路径：
-
-```text
-/Users/weilai/codex-test/wow-home-generator/index.html
-```
+克隆仓库后，直接打开 `index.html` 即可本地运行。
 
 ## Notes / 说明
 
