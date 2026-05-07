@@ -39,7 +39,9 @@
         <div class="button-row">
           <button id="generateBtn" type="button">生成家宅方案</button>
           <button class="secondary-button" id="saveBtn" type="button">保存方案截图</button>
+          <button class="secondary-button" id="copyLinkBtn" type="button">复制分享链接</button>
         </div>
+        <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
       </section>
 
       <section class="result-card" id="resultCard" aria-live="polite">
@@ -71,6 +73,27 @@
         <article class="affix-block">
           <h3 id="affixTitle">稀有词条</h3>
           <div class="affix-list" id="affixList"></div>
+        </article>
+
+        <article class="identity-block">
+          <div>
+            <h3 id="dangerTitle">家宅危险等级</h3>
+            <p class="identity-value" id="dangerLevel">有轻微投诉</p>
+          </div>
+          <div>
+            <h3 id="archiveTitle">档案稀有度</h3>
+            <p class="identity-value" id="archiveRarity">稀有档案</p>
+          </div>
+        </article>
+
+        <article class="neighbor-block">
+          <h3 id="neighborTitle">邻居评价</h3>
+          <p id="neighborNote">隔壁矮人投诉你半夜还在敲墙。</p>
+        </article>
+
+        <article class="tavern-block">
+          <h3 id="tavernTitle">酒馆声望</h3>
+          <p id="tavernReputation">旅店老板知道你的名字，但不愿细说。</p>
         </article>
 
         <article class="npc-block">

@@ -302,6 +302,14 @@ button:active {
   background: rgba(255, 255, 255, 0.07);
 }
 
+.copy-status {
+  min-height: 18px;
+  margin: -2px 0 0;
+  color: color-mix(in srgb, var(--accent-3) 82%, var(--ink));
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .result-card {
   overflow: hidden;
   border-width: 2px;
@@ -356,6 +364,9 @@ h2 {
 .info-block,
 .style-block,
 .affix-block,
+.identity-block,
+.neighbor-block,
+.tavern-block,
 .npc-block,
 .rumor-board {
   background: rgba(33, 31, 26, 0.98);
@@ -364,6 +375,9 @@ h2 {
 .info-block,
 .style-block,
 .affix-block,
+.identity-block,
+.neighbor-block,
+.tavern-block,
 .npc-block {
   padding: 16px;
 }
@@ -405,6 +419,9 @@ li::before {
 
 .style-block,
 .affix-block,
+.identity-block,
+.neighbor-block,
+.tavern-block,
 .npc-block {
   border-top: 1px solid rgba(215, 173, 83, 0.2);
 }
@@ -483,6 +500,38 @@ li::before {
   color: var(--accent-3);
 }
 
+.identity-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  padding: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 24%, transparent), color-mix(in srgb, var(--accent-2) 16%, transparent)),
+    rgba(33, 31, 26, 0.98);
+}
+
+.identity-block > div {
+  padding: 16px;
+  background: rgba(23, 21, 18, 0.72);
+}
+
+.identity-value {
+  margin: 0;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.35;
+  text-shadow: 0 0 14px var(--glow);
+}
+
+.neighbor-block p,
+.tavern-block p {
+  margin: 0;
+  color: #d7c6a5;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
 .npc-block p {
   margin: 0;
   color: var(--muted);
@@ -539,6 +588,10 @@ li::before {
     font-size: 34px;
   }
 
+  .identity-block {
+    grid-template-columns: 1fr;
+  }
+
 }
 
 @media (min-width: 430px) {
@@ -548,5 +601,9 @@ li::before {
 
   .button-row {
     grid-template-columns: 1fr 1fr;
+  }
+
+  #copyLinkBtn {
+    grid-column: 1 / -1;
   }
 }

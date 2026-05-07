@@ -475,11 +475,18 @@ const I18N = {
     classLabel: "职业",
     generate: "生成家宅方案",
     save: "保存方案截图",
+    copyLink: "复制分享链接",
+    copied: "链接已复制。把你的艾泽拉斯家宅档案发给朋友吧。",
     furniture: "核心家具",
     style: "装修风格说明",
     affixes: "稀有词条",
+    danger: "家宅危险等级",
+    archive: "档案稀有度",
+    neighbor: "邻居评价",
+    tavern: "酒馆声望",
     npc: "NPC 点评",
     rumors: "坊间传闻",
+    siteStamp: "worldofhomecraft.com · 魔坊世界档案馆",
     classSuffix: "方案",
     posterClassSuffix: "职业家宅方案",
     posterBrand: "魔坊世界",
@@ -496,11 +503,18 @@ const I18N = {
     classLabel: "Class",
     generate: "Roll a Homestead",
     save: "Save Poster",
+    copyLink: "Copy Share Link",
+    copied: "Link copied. Send your Azeroth homestead record to a friend.",
     furniture: "Core Furnishings",
     style: "Style Notes",
     affixes: "Rare Affixes",
+    danger: "House Danger Level",
+    archive: "Archive Rarity",
+    neighbor: "Neighbor Notes",
+    tavern: "Tavern Reputation",
     npc: "NPC Comments",
     rumors: "Tavern Rumors",
+    siteStamp: "worldofhomecraft.com · World of Homecraft Archive",
     classSuffix: "Record",
     posterClassSuffix: "Class Homestead Record",
     posterBrand: "Folk Azeroth Archive",
@@ -536,6 +550,8 @@ const I18N = {
 const classSelect = document.querySelector("#classSelect");
 const generateBtn = document.querySelector("#generateBtn");
 const saveBtn = document.querySelector("#saveBtn");
+const copyLinkBtn = document.querySelector("#copyLinkBtn");
+const copyStatus = document.querySelector("#copyStatus");
 const langToggle = document.querySelector("#langToggle");
 const brandName = document.querySelector("#brandName");
 const introText = document.querySelector("#introText");
@@ -551,6 +567,14 @@ const affixList = document.querySelector("#affixList");
 const styleTitle = document.querySelector("#styleTitle");
 const styleDescription = document.querySelector("#styleDescription");
 const affixTitle = document.querySelector("#affixTitle");
+const dangerTitle = document.querySelector("#dangerTitle");
+const dangerLevel = document.querySelector("#dangerLevel");
+const archiveTitle = document.querySelector("#archiveTitle");
+const archiveRarity = document.querySelector("#archiveRarity");
+const neighborTitle = document.querySelector("#neighborTitle");
+const neighborNote = document.querySelector("#neighborNote");
+const tavernTitle = document.querySelector("#tavernTitle");
+const tavernReputation = document.querySelector("#tavernReputation");
 const rumorList = document.querySelector("#rumorList");
 const npcTitle = document.querySelector("#npcTitle");
 const npcName = document.querySelector("#npcName");
@@ -568,6 +592,143 @@ const cornerNotes = [
   "地图师本人拒绝负责。",
   "若真找到了，请先确认你是不是喝多了。"
 ];
+
+const dangerLevels = {
+  zh: ["安全", "有轻微投诉", "守卫已记录", "附近居民不愿靠近", "请勿深夜进入"],
+  en: ["Safe", "Minor Complaints Filed", "Guard-Watched", "Neighbors Avoid It", "Do Not Enter After Midnight"]
+};
+
+const archiveLevels = {
+  zh: ["普通档案", "稀有档案", "史诗档案", "传说档案", "禁忌档案"],
+  en: ["Common Record", "Rare Record", "Epic Record", "Legendary Record", "Forbidden Archive"]
+};
+
+const dangerProfiles = {
+  warlock: [4, 8, 18, 32, 38],
+  paladin: [38, 34, 18, 8, 2],
+  rogue: [8, 22, 34, 28, 8],
+  shaman: [16, 28, 30, 18, 8],
+  deathKnight: [2, 8, 20, 34, 36],
+  warrior: [10, 24, 34, 24, 8],
+  hunter: [14, 30, 26, 22, 8],
+  mage: [12, 24, 30, 24, 10],
+  priest: [32, 34, 20, 10, 4],
+  druid: [24, 34, 22, 14, 6],
+  monk: [36, 34, 18, 8, 4],
+  demonHunter: [2, 8, 18, 34, 38],
+  evoker: [14, 26, 28, 22, 10]
+};
+
+const shareContent = {
+  zh: {
+    warlock: {
+      neighbor: ["附近居民认为你的地下室太安静了。", "隔壁裁缝说墙缝里有东西在背诵契约。", "信使要求以后只把包裹放在路边。"],
+      tavern: ["旅店老板知道你的名字，但不愿细说。", "有人替你付过酒钱，账单上只留下硫磺味。", "你在酒馆账本上的名字旁边画着一支黑蜡烛。"]
+    },
+    paladin: {
+      neighbor: ["邻居承认这里很安全，但抱怨清晨太亮。", "守卫说你家的门廊比岗哨还像岗哨。", "附近孩子相信你的壁炉能赶走噩梦。"],
+      tavern: ["酒馆老板说你会按时交租，而且会提醒别人也按时。", "你的杯子总被放在最干净的位置。", "有人在账本旁写下：此人不会赖账。"]
+    },
+    rogue: {
+      neighbor: ["隔壁矮人投诉你半夜还在敲墙。", "邻居说你的后门比正门更有礼貌。", "巡逻兵觉得这栋房子太会假装无辜。"],
+      tavern: ["你在酒馆的账本上被画了一个问号。", "酒馆老板说你不像会按时交租的人。", "有人替你付过酒钱，但没人承认。"]
+    },
+    shaman: {
+      neighbor: ["邻居已经分不清你在装修还是在召唤天气。", "隔壁牛头人说鼓声不错，就是雷声太准时。", "附近居民希望火盆和水盆别再吵架。"],
+      tavern: ["酒馆里的老萨满说风替你占了座。", "你的账页有水渍、灰烬和一小片闪电痕。", "老板说你点酒前，杯子自己转向了你。"]
+    },
+    deathKnight: {
+      neighbor: ["附近居民认为你的火盆没有尽到火盆的职责。", "守夜人说你家门口的霜会记名字。", "隔壁没人投诉，因为没人敢敲门。"],
+      tavern: ["旅店老板知道你的名字，但念出来会让炉火变小。", "你的账本页总是比其他页冷。", "有人替你留了座位，没人愿意坐旁边。"]
+    },
+    warrior: {
+      neighbor: ["隔壁铁匠说你关门像战鼓点名。", "邻居承认安全感很强，但墙壁压力很大。", "守卫已记录三次无故战吼。"],
+      tavern: ["酒馆老板给你的杯子换成了铁杯。", "你的账本旁写着：别让此人搬桌子。", "有人说你赢过一次掰手腕，桌子输了。"]
+    },
+    hunter: {
+      neighbor: ["邻居说宠物区已经开始向外扩张。", "附近居民想知道餐桌主位到底归谁。", "信使先向鹰点头，再向你问好。"],
+      tavern: ["老板说你每次来都像带了半个森林。", "你的账本页夹着一根羽毛和三块肉干。", "有人替你的宠物点过一杯水。"]
+    },
+    mage: {
+      neighbor: ["邻居投诉厕所门昨天开到了达拉然。", "有人说你家窗户显示的星空不属于本地。", "信使要求确认地址没有被传送走。"],
+      tavern: ["你的酒钱有时会提前一天付清。", "酒馆老板说你的杯子会自己回到桌上。", "账本旁写着：此人可能来自刚才，也可能来自明天。"]
+    },
+    priest: {
+      neighbor: ["邻居说路过时会下意识反省。", "附近居民觉得这里很安静，安静到能听见叹气。", "有人说你的窗帘从不沾灰。"],
+      tavern: ["老板说你听完别人抱怨后还会付自己的酒钱。", "你的账本页被压得很平，像刚做过告解。", "有人在你座位旁低声说了谢谢。"]
+    },
+    druid: {
+      neighbor: ["邻居怀疑你的藤蔓替你收过信。", "附近居民说地毯最近有春天的态度。", "有人投诉树影占用了公共走道。"],
+      tavern: ["酒馆老板说你的椅子总会长出一点苔藓。", "你的账本页闻起来像雨后的月光林地。", "有人替你点了清水，后来杯里开了花。"]
+    },
+    monk: {
+      neighbor: ["邻居说晨钟很好，就是让人突然想早起。", "隔壁农夫承认你的茶香平息过一次争吵。", "附近居民觉得训练木桩比房东更讲道理。"],
+      tavern: ["老板说你总能把吵架桌变成喝茶桌。", "你的账本页旁放着一个没人承认的空杯。", "有人说你没点酒，但酒坛自己靠近了。"]
+    },
+    demonHunter: {
+      neighbor: ["邻居说你的裂痕不像装修风格，更像警告。", "守卫路过时会下意识绕远。", "附近居民认为绿色火光已经超过气氛照明。"],
+      tavern: ["酒馆老板给你的座位留在离门最近的地方。", "你的账本页边缘有烧焦的爪痕。", "有人替你付酒钱，只求你别盯着他看。"]
+    },
+    evoker: {
+      neighbor: ["邻居说屋顶偶尔会有翅膀影子。", "信使向圆桌点头后才敢放下包裹。", "附近居民认为你的沙漏不太尊重今天。"],
+      tavern: ["老板说你上次明明明天才来过。", "你的账本页有青铜粉和翡翠光。", "有人替你留了高背椅，理由是尾巴空间。"]
+    }
+  },
+  en: {
+    warlock: {
+      neighbor: ["Neighbors say the basement has been too quiet.", "The tailor next door heard contracts inside the wall.", "Couriers now leave parcels in the road."],
+      tavern: ["The innkeeper knows your name, but will not explain why.", "Someone paid your tab. The coin smelled of brimstone.", "A black candle is drawn beside your name in the ledger."]
+    },
+    paladin: {
+      neighbor: ["The neighbors feel safe, but complain about dawn.", "Guards say the porch looks more disciplined than the gate.", "Children believe the hearth keeps nightmares out."],
+      tavern: ["The innkeeper says you pay rent on time and remind others.", "Your cup is always placed on the cleanest shelf.", "The ledger note says: will not skip the bill."]
+    },
+    rogue: {
+      neighbor: ["The dwarf next door filed three noise complaints.", "The back door seems more honest than the front.", "A patrolman said the house looked too innocent."],
+      tavern: ["There is a question mark next to your name in the tavern ledger.", "The innkeeper says you do not look like someone who pays rent on time.", "Someone paid for your drink. Nobody admits it."]
+    },
+    shaman: {
+      neighbor: ["Neighbors cannot tell renovation from weather.", "The drum is fine, says the tauren next door. The thunder is the issue.", "People nearby want the fire and water bowls separated."],
+      tavern: ["An old shaman says the wind saved you a seat.", "Your ledger page has water, ash, and a small lightning mark.", "The cup turned toward you before you ordered."]
+    },
+    deathKnight: {
+      neighbor: ["Neighbors say the brazier is failing at being a brazier.", "The night watch says the frost at your door remembers names.", "No one complains, because no one knocks."],
+      tavern: ["The innkeeper knows your name, but saying it lowers the fire.", "Your ledger page is colder than the rest.", "Someone saved you a chair. Nobody sits beside it."]
+    },
+    warrior: {
+      neighbor: ["The smith next door says your door closes like a war drum.", "Neighbors feel safer, though the walls look tired.", "Guards recorded three unexplained battle cries."],
+      tavern: ["The innkeeper replaced your cup with an iron one.", "The ledger note says: do not let this one move tables.", "You once beat the table at arm wrestling."]
+    },
+    hunter: {
+      neighbor: ["Neighbors say the beast corner is expanding.", "People nearby ask who owns the head seat at dinner.", "Couriers greet the hawk before greeting you."],
+      tavern: ["The innkeeper says you bring half a forest indoors.", "Your ledger page holds one feather and three strips of jerky.", "Someone ordered water for your pet."]
+    },
+    mage: {
+      neighbor: ["The washroom door opened in Dalaran yesterday.", "The window shows stars from somewhere else.", "Couriers ask if the address is still in this city."],
+      tavern: ["Your tab is sometimes paid tomorrow.", "The innkeeper says your cup returns itself.", "The ledger note says: may arrive from earlier."]
+    },
+    priest: {
+      neighbor: ["Neighbors lower their voices when passing.", "People say the room is quiet enough to hear regrets.", "The curtains never gather dust."],
+      tavern: ["The innkeeper says you listen to complaints and still pay your own bill.", "Your ledger page lies flat, like it confessed.", "Someone whispered thanks beside your chair."]
+    },
+    druid: {
+      neighbor: ["Neighbors suspect the vines collect your mail.", "The rug has developed opinions about spring.", "A tree shadow was reported in the public lane."],
+      tavern: ["The innkeeper says your chair grows moss.", "Your ledger page smells like rain in Moonglade.", "Someone ordered water for you. It bloomed."]
+    },
+    monk: {
+      neighbor: ["The morning bell has improved the lane's posture.", "A farmer says your tea ended an argument.", "The training post seems more reasonable than the landlord."],
+      tavern: ["The innkeeper says you turn shouting tables into tea tables.", "An empty cup keeps appearing beside your ledger.", "You did not order brew. The barrel moved closer."]
+    },
+    demonHunter: {
+      neighbor: ["Neighbors say the rift feels less like decor and more like a warning.", "Guards take the long way around.", "The green fire is past mood lighting."],
+      tavern: ["The innkeeper keeps your seat near the door.", "Your ledger page has scorched claw marks.", "Someone paid your tab so you would stop staring."]
+    },
+    evoker: {
+      neighbor: ["Neighbors report wing shadows over the roof.", "Couriers bow to the table before setting parcels down.", "The hourglass does not respect today."],
+      tavern: ["The innkeeper says you already came tomorrow.", "Your ledger page glitters with bronze dust and emerald light.", "Someone saved you a high-backed chair for tail clearance."]
+    }
+  }
+};
 
 function pickItems(items, count) {
   const shuffled = [...items].sort(() => Math.random() - 0.5);
@@ -588,6 +749,18 @@ function pickWeighted(items) {
     }
   }
   return items[0].name;
+}
+
+function pickWeightedIndex(weights) {
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+  let roll = Math.random() * total;
+  for (let index = 0; index < weights.length; index += 1) {
+    roll -= weights[index];
+    if (roll <= 0) {
+      return index;
+    }
+  }
+  return 0;
 }
 
 function generateSerial() {
@@ -643,6 +816,32 @@ function tNote(note) {
   return currentLang === "en" ? I18N.en.notes[note] || note : note;
 }
 
+function highestAffixRank(affixes) {
+  const rank = { "普通": 0, "稀有": 1, "史诗": 2, "传说": 3, "神话": 4 };
+  return Math.max(...affixes.map((affix) => rank[affix.rarity] || 0));
+}
+
+function archiveIndexFor(affixes) {
+  const highest = highestAffixRank(affixes);
+  if (highest >= 4) {
+    return 4;
+  }
+  if (highest === 3) {
+    return Math.random() < 0.82 ? 3 : 2;
+  }
+  if (highest === 2) {
+    return Math.random() < 0.75 ? 2 : 1;
+  }
+  if (highest === 1) {
+    return Math.random() < 0.72 ? 1 : 0;
+  }
+  return 0;
+}
+
+function identityFor(key) {
+  return shareContent[currentLang][key];
+}
+
 function updateStaticText() {
   document.documentElement.lang = t("htmlLang");
   brandName.textContent = t("brand");
@@ -650,9 +849,14 @@ function updateStaticText() {
   classLabel.textContent = t("classLabel");
   generateBtn.textContent = t("generate");
   saveBtn.textContent = t("save");
+  copyLinkBtn.textContent = t("copyLink");
   furnitureTitle.textContent = t("furniture");
   styleTitle.textContent = t("style");
   affixTitle.textContent = t("affixes");
+  dangerTitle.textContent = t("danger");
+  archiveTitle.textContent = t("archive");
+  neighborTitle.textContent = t("neighbor");
+  tavernTitle.textContent = t("tavern");
   npcTitle.textContent = t("npc");
   rumorTitle.textContent = t("rumors");
   langToggle.textContent = currentLang === "zh" ? "中文 / EN" : "EN / 中文";
@@ -668,6 +872,7 @@ function renderCurrentPlan() {
 
   const data = contentFor(currentPlan.key);
   const meta = metaFor(currentPlan.key);
+  const identity = identityFor(currentPlan.key);
   const npc = meta.npcs[currentPlan.npcIndex];
 
   document.body.dataset.theme = currentPlan.key;
@@ -678,6 +883,10 @@ function renderCurrentPlan() {
   renderList(furnitureList, currentPlan.furnitureIndices.map((index) => data.furniture[index]));
   renderList(coordsList, currentPlan.coordIndices.map((index) => data.coords[index]));
   renderAffixes(currentPlan.affixes);
+  dangerLevel.textContent = dangerLevels[currentLang][currentPlan.dangerIndex];
+  archiveRarity.textContent = archiveLevels[currentLang][currentPlan.archiveIndex];
+  neighborNote.textContent = identity.neighbor[currentPlan.neighborIndex % identity.neighbor.length];
+  tavernReputation.textContent = identity.tavern[currentPlan.tavernIndex % identity.tavern.length];
   styleDescription.textContent = getStyleText(data, currentPlan.styleIndex);
   renderList(rumorList, currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]));
   npcName.textContent = `${npc.name}:`;
@@ -732,6 +941,10 @@ function generatePlan() {
     furnitureIndices: pickIndices(plan.furniture, 3),
     coordIndices: pickIndices(plan.coords, 3),
     affixes,
+    dangerIndex: pickWeightedIndex(dangerProfiles[key]),
+    archiveIndex: archiveIndexFor(affixes),
+    neighborIndex: pickIndices(shareContent.zh[key].neighbor, 1)[0],
+    tavernIndex: pickIndices(shareContent.zh[key].tavern, 1)[0],
     styleIndex: Math.floor(Math.random() * 2),
     rumorIndices: pickIndices(plan.rumors, Math.floor(Math.random() * 2) + 2),
     npcIndex: meta.npcs.indexOf(npc),
@@ -824,14 +1037,17 @@ function savePlanImage() {
   const data = contentFor(currentPlan.key);
   const meta = metaFor(currentPlan.key);
   const npc = meta.npcs[currentPlan.npcIndex];
+  const identity = identityFor(currentPlan.key);
   const furniture = currentPlan.furnitureIndices.map((index) => data.furniture[index]);
   const locations = currentPlan.coordIndices.map((index) => data.coords[index]);
   const rumors = currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]);
+  const neighbor = identity.neighbor[currentPlan.neighborIndex % identity.neighbor.length];
+  const tavern = identity.tavern[currentPlan.tavernIndex % identity.tavern.length];
   const styleText = getStyleText(data, currentPlan.styleIndex);
 
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
-  canvas.height = 1620;
+  canvas.height = 1920;
   const ctx = canvas.getContext("2d");
   const width = canvas.width;
   const padding = 72;
@@ -913,6 +1129,20 @@ function savePlanImage() {
 
   ctx.fillStyle = "#d7ad53";
   ctx.font = "700 24px sans-serif";
+  ctx.fillText(t("danger"), padding, y);
+  ctx.fillText(t("archive"), padding + 470, y);
+  y += 42;
+  ctx.fillStyle = "#f4ead8";
+  ctx.font = "900 30px sans-serif";
+  ctx.fillText(dangerLevels[currentLang][currentPlan.dangerIndex], padding, y);
+  ctx.fillText(archiveLevels[currentLang][currentPlan.archiveIndex], padding + 470, y);
+  y += 58;
+
+  y = drawSection(ctx, t("neighbor"), [neighbor], padding, y, width - padding * 2);
+  y = drawSection(ctx, t("tavern"), [tavern], padding, y, width - padding * 2);
+
+  ctx.fillStyle = "#d7ad53";
+  ctx.font = "700 24px sans-serif";
   ctx.fillText(t("npc"), padding, y);
   y += 42;
   ctx.fillStyle = accentTwo;
@@ -940,7 +1170,10 @@ function savePlanImage() {
   ctx.fillStyle = "rgba(215, 198, 165, 0.48)";
   ctx.font = "20px sans-serif";
   ctx.textAlign = "right";
-  ctx.fillText(tNote(currentPlan.cornerNote), width - padding, canvas.height - 92);
+  ctx.fillText(tNote(currentPlan.cornerNote), width - padding, canvas.height - 118);
+  ctx.fillStyle = "rgba(215, 173, 83, 0.56)";
+  ctx.font = "700 20px sans-serif";
+  ctx.fillText(t("siteStamp"), width - padding, canvas.height - 82);
   ctx.textAlign = "left";
 
   const link = document.createElement("a");
@@ -949,12 +1182,36 @@ function savePlanImage() {
   link.click();
 }
 
+async function copyShareLink() {
+  const url = "https://worldofhomecraft.com";
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(url);
+    } else {
+      const input = document.createElement("textarea");
+      input.value = url;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+    }
+    copyStatus.textContent = t("copied");
+  } catch (error) {
+    copyStatus.textContent = url;
+  }
+}
+
 generateBtn.addEventListener("click", generatePlan);
 saveBtn.addEventListener("click", savePlanImage);
+copyLinkBtn.addEventListener("click", copyShareLink);
 classSelect.addEventListener("change", generatePlan);
 langToggle.addEventListener("click", () => {
   currentLang = currentLang === "zh" ? "en" : "zh";
   updateStaticText();
+  copyStatus.textContent = "";
   renderCurrentPlan();
 });
 
