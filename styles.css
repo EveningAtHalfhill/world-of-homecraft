@@ -382,8 +382,27 @@ h2 {
   font-weight: 800;
 }
 
+.atmosphere-fragments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 14px;
+  max-width: 100%;
+}
+
+.atmosphere-fragments span {
+  color: rgba(215, 198, 165, 0.46);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.atmosphere-fragments span:nth-child(even) {
+  transform: translateY(3px);
+  color: rgba(244, 234, 216, 0.34);
+}
+
 .info-block,
-.style-block,
 .affix-block,
 .visitor-note-block,
 .identity-block,
@@ -395,7 +414,6 @@ h2 {
 }
 
 .info-block,
-.style-block,
 .affix-block,
 .visitor-note-block,
 .identity-block,
@@ -440,7 +458,6 @@ li::before {
   content: "";
 }
 
-.style-block,
 .affix-block,
 .visitor-note-block,
 .identity-block,
@@ -452,21 +469,6 @@ li::before {
   border: 1px solid rgba(215, 173, 83, 0.16);
   border-radius: 8px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.style-block p {
-  margin-bottom: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.75;
-}
-
-.object-summary-block p {
-  margin: 0;
-  color: #d7c6a5;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.65;
 }
 
 .visitor-note-block {
@@ -664,7 +666,6 @@ li::before {
   }
 
   .info-block,
-  .style-block,
   .affix-block,
   .visitor-note-block,
   .neighbor-block,
@@ -673,7 +674,6 @@ li::before {
     padding: 18px 16px;
   }
 
-  .style-block,
   .affix-block,
   .visitor-note-block,
   .identity-block,

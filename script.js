@@ -476,8 +476,6 @@ const I18N = {
     generate: "生成家宅方案",
     save: "分享我的家宅档案",
     copied: "家宅档案已装入行囊，链接也抄进旅店账本。",
-    furniture: "档案物件",
-    style: "房间残留",
     affixes: "稀有词条",
     visitor: "访客留言",
     danger: "家宅危险等级",
@@ -504,8 +502,6 @@ const I18N = {
     generate: "Roll a Homestead",
     save: "Share My Homestead Record",
     copied: "Your homestead record is packed. The link is copied into the tavern ledger.",
-    furniture: "Archive Objects",
-    style: "Room Trace",
     affixes: "Rare Affixes",
     visitor: "Visitor Note",
     danger: "House Danger Level",
@@ -560,13 +556,10 @@ const serialNumber = document.querySelector("#serialNumber");
 const themeName = document.querySelector("#themeName");
 const characterTitle = document.querySelector("#characterTitle");
 const archiveRegion = document.querySelector("#archiveRegion");
+const atmosphereFragments = document.querySelector("#atmosphereFragments");
 const visitorTitle = document.querySelector("#visitorTitle");
 const visitorNote = document.querySelector("#visitorNote");
-const furnitureTitle = document.querySelector("#furnitureTitle");
-const furnitureSummary = document.querySelector("#furnitureSummary");
 const affixList = document.querySelector("#affixList");
-const styleTitle = document.querySelector("#styleTitle");
-const styleDescription = document.querySelector("#styleDescription");
 const affixTitle = document.querySelector("#affixTitle");
 const dangerTitle = document.querySelector("#dangerTitle");
 const dangerLevel = document.querySelector("#dangerLevel");
@@ -634,6 +627,39 @@ const roomTraces = {
     monk: ["Tea has settled the argument.", "The morning bell still hangs in bamboo shade."],
     demonHunter: ["Felfire leaves every shadow sharpened.", "The rift still holds a glaive-cold gleam."],
     evoker: ["Bronze dust and emerald light rest on the table.", "Warm wind lingers beside the hourglass."]
+  }
+};
+
+const atmosphereWords = {
+  zh: {
+    warlock: ["冷铁味", "低语声", "门缝绿光", "蜡烛灰"],
+    paladin: ["白石尘", "晨光", "誓约蜡痕", "旧钟声"],
+    rogue: ["皮革味", "暗巷灰", "金币声", "毒药绿光"],
+    shaman: ["雨腥味", "图腾木屑", "雷声残响", "灰烬"],
+    deathKnight: ["冷炉灰", "霜痕", "黑铁味", "无声旗影"],
+    warrior: ["铁锈", "战旗影", "旧战吼", "皮革尘"],
+    hunter: ["松针", "兽皮味", "鹰羽", "篝火灰"],
+    mage: ["蓝光尘", "奥术静电", "茶壶雾", "错位星尘"],
+    priest: ["烛泪", "低声祈祷", "白纱灰", "暗影边角"],
+    druid: ["月光苔", "潮湿木纹", "花粉", "树影"],
+    monk: ["茶香", "竹影", "晨钟余音", "酒坛木塞"],
+    demonHunter: ["邪火灰", "裂痕绿光", "战刃冷影", "焦痕"],
+    evoker: ["青铜尘", "翡翠光", "龙鳞热风", "沙漏声"]
+  },
+  en: {
+    warlock: ["cold iron", "low whispers", "green doorlight", "candle ash"],
+    paladin: ["white stone dust", "dawnlight", "oath-wax", "old bell sound"],
+    rogue: ["leather smell", "backroom dust", "coin-smoke", "poison green"],
+    shaman: ["rain scent", "totem splinters", "thunder echo", "ash"],
+    deathKnight: ["dead hearth ash", "frost marks", "black iron", "silent banner"],
+    warrior: ["rust", "banner shadow", "old warcry", "leather dust"],
+    hunter: ["pine needles", "hide scent", "hawk feather", "campfire ash"],
+    mage: ["blue dust", "arcane static", "teapot mist", "misplaced stars"],
+    priest: ["candle tears", "low prayer", "white veil dust", "shadow edge"],
+    druid: ["moonlit moss", "wet woodgrain", "pollen", "tree shadow"],
+    monk: ["tea steam", "bamboo shade", "morning bell", "brew cork"],
+    demonHunter: ["fel ash", "rift green", "glaive-cold shadow", "scorch mark"],
+    evoker: ["bronze dust", "emerald light", "scale-warm wind", "hourglass sound"]
   }
 };
 
@@ -973,6 +999,15 @@ function renderAffixes(affixes) {
   });
 }
 
+function renderAtmosphereFragments(fragments) {
+  atmosphereFragments.innerHTML = "";
+  fragments.forEach((fragment) => {
+    const span = document.createElement("span");
+    span.textContent = fragment;
+    atmosphereFragments.appendChild(span);
+  });
+}
+
 function t(key) {
   return I18N[currentLang][key];
 }
@@ -1036,6 +1071,17 @@ function roomTraceFor(key, index) {
   return traces[index % traces.length];
 }
 
+function atmosphereFor(key) {
+  const data = contentFor(key);
+  const trace = roomTraceFor(key, currentPlan.styleIndex);
+  const fragments = [
+    ...currentPlan.furnitureIndices.map((index) => data.furniture[index]),
+    ...atmosphereWords[currentLang][key],
+    trace
+  ];
+  return currentPlan.atmosphereIndices.map((index) => fragments[index % fragments.length]);
+}
+
 function updateStaticText() {
   document.documentElement.lang = t("htmlLang");
   brandName.textContent = t("brand");
@@ -1043,8 +1089,6 @@ function updateStaticText() {
   classLabel.textContent = t("classLabel");
   generateBtn.textContent = t("generate");
   saveBtn.textContent = t("save");
-  furnitureTitle.textContent = t("furniture");
-  styleTitle.textContent = t("style");
   affixTitle.textContent = t("affixes");
   visitorTitle.textContent = t("visitor");
   dangerTitle.textContent = t("danger");
@@ -1077,13 +1121,12 @@ function renderCurrentPlan() {
   characterTitle.textContent = homesteadIdentity.titles[currentPlan.characterTitleIndex % homesteadIdentity.titles.length];
   archiveRegion.textContent = homesteadIdentity.regions[currentPlan.archiveRegionIndex % homesteadIdentity.regions.length];
   visitorNote.textContent = homesteadIdentity.visitors[currentPlan.visitorNoteIndex % homesteadIdentity.visitors.length];
-  furnitureSummary.textContent = currentPlan.furnitureIndices.map((index) => data.furniture[index]).join(" · ");
+  renderAtmosphereFragments(atmosphereFor(currentPlan.key));
   renderAffixes(currentPlan.affixes);
   dangerLevel.textContent = dangerLevels[currentLang][currentPlan.dangerIndex];
   archiveRarity.textContent = archiveLevels[currentLang][currentPlan.archiveIndex];
   neighborNote.textContent = identity.neighbor[currentPlan.neighborIndex % identity.neighbor.length];
   tavernReputation.textContent = identity.tavern[currentPlan.tavernIndex % identity.tavern.length];
-  styleDescription.textContent = roomTraceFor(currentPlan.key, currentPlan.styleIndex);
   renderList(rumorList, currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]));
   npcName.textContent = `${npc.name}:`;
   npcComment.textContent = `“${npc.comment}”`;
@@ -1131,6 +1174,8 @@ function generatePlan() {
   const affixes = generateAffixes(plan);
   const rumorPoolSize = Math.min(plan.rumors.length, EN_CONTENT[key].rumors.length);
   const rumorPool = Array.from({ length: rumorPoolSize });
+  const atmospherePoolSize = 3 + atmosphereWords.zh[key].length + roomTraces.zh[key].length;
+  const atmosphereCount = Math.floor(Math.random() * 3) + 3;
 
   currentPlan = {
     key,
@@ -1140,6 +1185,7 @@ function generatePlan() {
     archiveRegionIndex: pickIndices(identityLayer.zh[key].regions, 1)[0],
     visitorNoteIndex: pickIndices(identityLayer.zh[key].visitors, 1)[0],
     furnitureIndices: pickIndices(plan.furniture, 3),
+    atmosphereIndices: pickIndices(Array.from({ length: atmospherePoolSize }), atmosphereCount),
     coordIndices: pickIndices(plan.coords, 3),
     affixes,
     dangerIndex: pickWeightedIndex(dangerProfiles[key]),
@@ -1277,6 +1323,26 @@ function drawPosterBadge(ctx, text, rarity, x, y, maxWidth = 440) {
   return badge;
 }
 
+function drawPosterAtmosphere(ctx, fragments, x, y, maxWidth) {
+  ctx.font = "700 21px sans-serif";
+  let cursorX = x;
+  let cursorY = y;
+  const gapX = 18;
+  const gapY = 32;
+  fragments.forEach((fragment, index) => {
+    const text = index % 2 === 0 ? fragment : `· ${fragment}`;
+    const textWidth = ctx.measureText(text).width;
+    if (cursorX > x && cursorX + textWidth > x + maxWidth) {
+      cursorX = x + 24;
+      cursorY += gapY;
+    }
+    ctx.fillStyle = index % 2 === 0 ? "rgba(215, 198, 165, 0.48)" : "rgba(244, 234, 216, 0.36)";
+    ctx.fillText(text, cursorX, cursorY);
+    cursorX += textWidth + gapX;
+  });
+  return cursorY + gapY;
+}
+
 function savePlanImage(options = {}) {
   const { download = true } = options;
   if (!currentPlan) {
@@ -1291,15 +1357,14 @@ function savePlanImage(options = {}) {
   const currentCharacterTitle = homesteadIdentity.titles[currentPlan.characterTitleIndex % homesteadIdentity.titles.length];
   const currentArchiveRegion = homesteadIdentity.regions[currentPlan.archiveRegionIndex % homesteadIdentity.regions.length];
   const currentVisitorNote = homesteadIdentity.visitors[currentPlan.visitorNoteIndex % homesteadIdentity.visitors.length];
-  const furniture = currentPlan.furnitureIndices.map((index) => data.furniture[index]);
+  const atmosphere = atmosphereFor(currentPlan.key);
   const rumors = currentPlan.rumorIndices.map((index) => data.rumors[index % data.rumors.length]);
   const neighbor = identity.neighbor[currentPlan.neighborIndex % identity.neighbor.length];
   const tavern = identity.tavern[currentPlan.tavernIndex % identity.tavern.length];
-  const styleText = roomTraceFor(currentPlan.key, currentPlan.styleIndex);
 
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
-  canvas.height = 2160;
+  canvas.height = 1980;
   const ctx = canvas.getContext("2d");
   const width = canvas.width;
   const padding = 72;
@@ -1371,25 +1436,11 @@ function savePlanImage(options = {}) {
   ctx.font = "700 28px sans-serif";
   y = drawWrappedText(ctx, currentVisitorNote, padding, y, width - padding * 2, 38, 2) + 12;
 
+  y = drawPosterAtmosphere(ctx, atmosphere, padding, y, width - padding * 2) + 20;
+
   ctx.fillStyle = "rgba(215, 173, 83, 0.9)";
   ctx.fillRect(padding, y, width - padding * 2, 3);
   y += 56;
-
-  ctx.fillStyle = "#d7ad53";
-  ctx.font = "700 24px sans-serif";
-  ctx.fillText(t("furniture"), padding, y);
-  y += 38;
-  ctx.fillStyle = "#f4ead8";
-  ctx.font = "24px sans-serif";
-  y = drawWrappedText(ctx, furniture.join(" · "), padding, y, width - padding * 2, 34, 2) + 22;
-
-  ctx.fillStyle = "#d7ad53";
-  ctx.font = "700 24px sans-serif";
-  ctx.fillText(t("style"), padding, y);
-  y += 38;
-  ctx.fillStyle = "rgba(244, 234, 216, 0.82)";
-  ctx.font = "24px sans-serif";
-  y = drawWrappedText(ctx, styleText, padding, y, width - padding * 2, 34, 2) + 24;
 
   ctx.fillStyle = "#d7ad53";
   ctx.font = "700 24px sans-serif";
