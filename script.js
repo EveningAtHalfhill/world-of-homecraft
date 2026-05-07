@@ -474,9 +474,8 @@ const I18N = {
     intro: "一个会生成职业家宅、坊间传闻与NPC吐槽的艾泽拉斯生活幻想工具。",
     classLabel: "职业",
     generate: "生成家宅方案",
-    save: "保存方案截图",
-    copyLink: "复制分享链接",
-    copied: "链接已复制。把你的艾泽拉斯家宅档案发给朋友吧。",
+    save: "分享我的家宅档案",
+    copied: "家宅档案已装入行囊，链接也抄进旅店账本。",
     furniture: "核心家具",
     style: "装修风格说明",
     affixes: "稀有词条",
@@ -502,9 +501,8 @@ const I18N = {
     intro: "A folk Azeroth life archive for class-themed dwellings, tavern rumors, and NPC comments.",
     classLabel: "Class",
     generate: "Roll a Homestead",
-    save: "Save Poster",
-    copyLink: "Copy Share Link",
-    copied: "Link copied. Send your Azeroth homestead record to a friend.",
+    save: "Share My Homestead Record",
+    copied: "Your homestead record is packed. The link is copied into the tavern ledger.",
     furniture: "Core Furnishings",
     style: "Style Notes",
     affixes: "Rare Affixes",
@@ -550,7 +548,6 @@ const I18N = {
 const classSelect = document.querySelector("#classSelect");
 const generateBtn = document.querySelector("#generateBtn");
 const saveBtn = document.querySelector("#saveBtn");
-const copyLinkBtn = document.querySelector("#copyLinkBtn");
 const copyStatus = document.querySelector("#copyStatus");
 const langToggle = document.querySelector("#langToggle");
 const brandName = document.querySelector("#brandName");
@@ -849,7 +846,6 @@ function updateStaticText() {
   classLabel.textContent = t("classLabel");
   generateBtn.textContent = t("generate");
   saveBtn.textContent = t("save");
-  copyLinkBtn.textContent = t("copyLink");
   furnitureTitle.textContent = t("furniture");
   styleTitle.textContent = t("style");
   affixTitle.textContent = t("affixes");
@@ -1076,7 +1072,8 @@ function drawPosterBadge(ctx, text, rarity, x, y, maxWidth = 440) {
   return badge;
 }
 
-function savePlanImage() {
+function savePlanImage(options = {}) {
+  const { download = true } = options;
   if (!currentPlan) {
     generatePlan();
   }
@@ -1231,13 +1228,48 @@ function savePlanImage() {
   ctx.fillText(t("siteStamp"), width - padding, canvas.height - 82);
   ctx.textAlign = "left";
 
+  const image = {
+    canvas,
+    filename: `wow-home-plan-${tClass(currentPlan.key)}.png`,
+    dataUrl: canvas.toDataURL("image/png")
+  };
+
+  if (download) {
+    downloadPlanImage(image);
+  }
+
+  return image;
+}
+
+function downloadPlanImage(image) {
   const link = document.createElement("a");
-  link.download = `wow-home-plan-${tClass(currentPlan.key)}.png`;
-  link.href = canvas.toDataURL("image/png");
+  link.download = image.filename;
+  link.href = image.dataUrl;
   link.click();
 }
 
-async function copyShareLink() {
+function dataUrlToBlob(dataUrl) {
+  const [meta, data] = dataUrl.split(",");
+  const mimeMatch = meta.match(/data:([^;]+)/);
+  const mime = mimeMatch ? mimeMatch[1] : "image/png";
+  const binary = atob(data);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return new Blob([bytes], { type: mime });
+}
+
+function canvasToBlob(canvas, dataUrl) {
+  if (canvas.toBlob) {
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => resolve(blob || dataUrlToBlob(dataUrl)), "image/png");
+    });
+  }
+  return Promise.resolve(dataUrlToBlob(dataUrl));
+}
+
+async function copyShareLink(updateStatus = true) {
   const url = "https://worldofhomecraft.com";
   try {
     if (navigator.clipboard && window.isSecureContext) {
@@ -1253,15 +1285,65 @@ async function copyShareLink() {
       document.execCommand("copy");
       document.body.removeChild(input);
     }
-    copyStatus.textContent = t("copied");
+    if (updateStatus) {
+      copyStatus.textContent = t("copied");
+    }
+    return true;
   } catch (error) {
-    copyStatus.textContent = url;
+    if (updateStatus) {
+      copyStatus.textContent = url;
+    }
+    return false;
   }
 }
 
+function isLikelyMobileShare() {
+  return window.matchMedia && (
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(max-width: 680px)").matches
+  );
+}
+
+async function shareHomesteadRecord() {
+  await copyShareLink(false);
+  const image = savePlanImage({ download: false });
+  const url = "https://worldofhomecraft.com";
+  let shared = false;
+
+  if (isLikelyMobileShare() && navigator.share) {
+    try {
+      const blob = await canvasToBlob(image.canvas, image.dataUrl);
+      const file = typeof File === "function" ? new File([blob], image.filename, { type: "image/png" }) : null;
+      const shareData = {
+        title: "World of Homecraft",
+        text: t("copied"),
+        url
+      };
+
+      if (file && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+        shareData.files = [file];
+      }
+
+      await navigator.share(shareData);
+      shared = true;
+
+      if (!shareData.files) {
+        downloadPlanImage(image);
+      }
+    } catch (error) {
+      shared = false;
+    }
+  }
+
+  if (!shared) {
+    downloadPlanImage(image);
+  }
+
+  copyStatus.textContent = t("copied");
+}
+
 generateBtn.addEventListener("click", generatePlan);
-saveBtn.addEventListener("click", savePlanImage);
-copyLinkBtn.addEventListener("click", copyShareLink);
+saveBtn.addEventListener("click", shareHomesteadRecord);
 classSelect.addEventListener("change", generatePlan);
 langToggle.addEventListener("click", () => {
   currentLang = currentLang === "zh" ? "en" : "zh";

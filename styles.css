@@ -28,6 +28,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   color: var(--ink);
   transition: background 420ms ease, color 420ms ease;
@@ -162,7 +163,7 @@ select {
 }
 
 .app-shell {
-  width: min(100%, 480px);
+  width: min(100vw, 480px);
   min-height: 100vh;
   margin: 0 auto;
   padding: 18px 14px 28px;
@@ -304,7 +305,7 @@ button:active {
 
 .copy-status {
   min-height: 18px;
-  margin: -2px 0 0;
+  margin: 0;
   color: color-mix(in srgb, var(--accent-3) 82%, var(--ink));
   font-size: 12px;
   line-height: 1.5;
@@ -315,6 +316,7 @@ button:active {
   border-width: 2px;
   border-radius: 8px;
   position: relative;
+  background: color-mix(in srgb, var(--panel) 88%, #0c0a0b);
 }
 
 .result-card::before {
@@ -358,6 +360,7 @@ h2 {
 .result-grid {
   display: grid;
   gap: 1px;
+  margin-bottom: 6px;
   background: color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
@@ -424,6 +427,10 @@ li::before {
 .tavern-block,
 .npc-block {
   border-top: 1px solid rgba(215, 173, 83, 0.2);
+  margin: 8px 10px 0;
+  border: 1px solid rgba(215, 173, 83, 0.16);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .style-block p {
@@ -436,8 +443,10 @@ li::before {
 .rumor-board {
   display: grid;
   gap: 10px;
-  padding: 14px 16px 16px;
-  border-top: 1px solid rgba(215, 173, 83, 0.2);
+  margin: 8px 10px 0;
+  border: 1px solid rgba(215, 173, 83, 0.2);
+  border-radius: 8px;
+  padding: 16px;
   background:
     linear-gradient(135deg, rgba(160, 118, 57, 0.16), rgba(38, 31, 22, 0.98)),
     rgba(33, 31, 26, 0.98);
@@ -509,21 +518,30 @@ li::before {
 .identity-block {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  padding: 0;
+  gap: 6px;
+  padding: 8px;
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--accent) 24%, transparent), color-mix(in srgb, var(--accent-2) 16%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 18%, transparent), color-mix(in srgb, var(--accent-2) 12%, transparent)),
     rgba(33, 31, 26, 0.98);
 }
 
 .identity-block > div {
-  padding: 16px;
-  background: rgba(23, 21, 18, 0.72);
+  border: 1px solid rgba(215, 173, 83, 0.16);
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, rgba(215, 173, 83, 0.08), transparent),
+    rgba(23, 21, 18, 0.74);
+}
+
+.identity-block h3 {
+  color: color-mix(in srgb, var(--gold) 72%, var(--muted));
+  font-size: 12px;
 }
 
 .identity-value {
   margin: 0;
-  color: var(--ink);
+  color: color-mix(in srgb, var(--accent-3) 74%, var(--ink));
   font-size: 15px;
   font-weight: 900;
   line-height: 1.35;
@@ -535,14 +553,14 @@ li::before {
   margin: 0;
   color: #d7c6a5;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.78;
 }
 
 .npc-block p {
   margin: 0;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.75;
+  line-height: 1.82;
 }
 
 .npc-block strong {
@@ -554,7 +572,7 @@ li::before {
 
 .rumor-board span {
   color: #d6b476;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -579,8 +597,10 @@ li::before {
 }
 
 .corner-note {
-  margin: 0;
-  padding: 10px 16px 14px;
+  margin: 8px 10px 10px;
+  border: 1px solid rgba(215, 173, 83, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
   color: rgba(215, 198, 165, 0.48);
   background: rgba(33, 31, 26, 0.98);
   border-top: 1px solid rgba(215, 173, 83, 0.12);
@@ -598,18 +618,27 @@ li::before {
     grid-template-columns: 1fr;
   }
 
-}
-
-@media (min-width: 430px) {
-  .result-grid {
-    grid-template-columns: 1fr 1fr;
+  .info-block,
+  .style-block,
+  .affix-block,
+  .neighbor-block,
+  .tavern-block,
+  .npc-block {
+    padding: 18px 16px;
   }
 
-  .button-row {
-    grid-template-columns: 1fr 1fr;
+  .style-block,
+  .affix-block,
+  .identity-block,
+  .neighbor-block,
+  .tavern-block,
+  .npc-block,
+  .rumor-board {
+    margin-right: 8px;
+    margin-left: 8px;
   }
 
-  #copyLinkBtn {
-    grid-column: 1 / -1;
+  .rumor-board {
+    padding: 16px;
   }
 }
